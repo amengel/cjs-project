@@ -130,7 +130,6 @@ OUT
 
 ###By Race and Class
 
-
 Returning to the summary evaluation index, the table below provides the means for each race/class category. Whereas the prior class-only results indicated that higher class individuals tended to evaluate the police more positively, this seems driven by whites. A 7 point difference exists between the lowest and highest class whites, but this gap is only 2 points for blacks. The former is significant at p < `r myround(svyttest(police.rate.sc~class.rac, subset(d.wht, class.rac == 0 | class.rac == 1))$p.value[[1]], 3)` while the latter is not (p = `r myround(svyttest(police.rate.sc~class.rac, subset(d.blk, class.rac == 0 | class.rac == 1))$p.value[[1]], 3)`).
 
 ```{r, echo = F}
@@ -194,6 +193,26 @@ summary(lm(court.fair.all ~ court.fair.treat*black, cjs.df, weights = wts_whole)
 
 ###By Class
 
+**``fairly apply the law?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair + class.rac, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair + class.rac, d.all), 2)*100))
+```
+**``fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair.class + class.rac, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair.class + class.rac, d.all), 2)*100))
+```
+**``fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair.race + class.rac, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair.race + class.rac, d.all), 2)*100))
+```
+
+```{r, echo = F}
+summary(lm(court.fair.all ~ court.fair.treat*class.rac, cjs.df, weights = wts_whole))
+```
+
 
 ###By Race and Class
 
@@ -201,15 +220,39 @@ summary(lm(court.fair.all ~ court.fair.treat*black, cjs.df, weights = wts_whole)
 ###By race
 ```{r, echo = F}
 round(prop.table(svytable(~respect.police + black, d.all), 2)*100)
-chisq.test(round(prop.table(svytable(~respect.police + black, d.all), 2)*100))
+#chisq.test(round(prop.table(svytable(~respect.police + black, d.all), 2)*100))
 ```
 
 ###By Class
 ```{r, echo = F}
-round(prop.table(svytable(~respect.police + class, d.all), 2)*100)
-chisq.test(round(prop.table(svytable(~respect.police + class, d.all), 2)*100))
+round(prop.table(svytable(~respect.police + class.rac, d.all), 2)*100)
+# chisq.test(round(prop.table(svytable(~respect.police + class, d.all), 2)*100))
 ```
 
 ###By Race and Class
 
+**Whites**
+```{r, echo = F}
+round(prop.table(svytable(~respect.police + class.rac, d.wht), 2)*100)
+# chisq.test(round(prop.table(svytable(~respect.police + class, d.wht), 2)*100))
+```
+**Blacks**
+```{r, echo = F}
+round(prop.table(svytable(~respect.police + class.rac, d.blk), 2)*100)
+# chisq.test(round(prop.table(svytable(~respect.police + class, d.wht), 2)*100))
+```
+
 ##Police Quality ``Bad Apples''
+###By race
+```{r, echo = F}
+round(prop.table(svytable(~pol.badapples + black, d.all), 2)*100)
+#chisq.test(round(prop.table(svytable(~respect.police + black, d.all), 2)*100))
+```
+
+###By Class
+```{r, echo = F}
+round(prop.table(svytable(~pol.badapples + class.rac, d.all), 2)*100)
+# chisq.test(round(prop.table(svytable(~respect.police + class, d.all), 2)*100))
+```
+
+###By Race and Class
