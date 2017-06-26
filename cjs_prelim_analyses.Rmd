@@ -1,0 +1,215 @@
+---
+title: "Preliminary Analyses"
+author: Drew Engelhardt
+#date: March 22, 2005
+output: html_document
+---
+```{r, include = F}
+source("~/Documents/git/cjs project/cjs_cleaning.R")
+library(psy)
+library(broman)
+```
+
+#Average Policy Differences By Race and Class
+##Police Fairness Evaluations
+###By race
+Below I present the distribution for each of the individual police evaluation items. I include both the full sample, and then the white and black only samples respectively. Higher values denote more positive evaluations. Everything is in percentage points. I also report the results from a Chi$^2$ test on these distributions. Unsurprisingly, all of these are significant. 
+
+**Solving Crime**
+```{r, echo = F}
+round(prop.table(svytable(~p.crim.solve + black, d.all),2)*100)
+chisq.test(round(prop.table(svytable(~p.crim.solve + black, d.all),2)*100))
+```
+**Protecting people like you from violent crime**
+```{r, echo = F}
+round(prop.table(svytable(~p.viol.crim + black, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~p.viol.crim + black, d.all),2)*100))
+```
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+round(prop.table(svytable(~p.race.fair + black, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~p.race.fair + black, d.all),2)*100))
+```
+**Not using excessive force on suspects**
+```{r, echo = F}
+round(prop.table(svytable(~p.exces.force + black, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~p.exces.force + black, d.all),2)*100))
+```
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+round(prop.table(svytable(~p.account + black, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~p.account + black, d.all),2)*100))
+```
+
+```{r, echo = F}
+w.df <- subset(cjs.df, black == 0)
+b.df <- subset(cjs.df, black == 1)
+```
+I also considered a summary evaluation index. I summed together the 5 evaluations and set the scale to run from 0-1, where higher values denote more positive evaluations. The mean for the full sample is `r myround(svymean(~police.rate.sc, d.all, na.rm = T)[[1]], 2)`, while for whites it is `r myround(svymean(~police.rate.sc, d.wht, na.rm = T)[[1]], 2)` and for blacks it is `r myround(svymean(~police.rate.sc, d.blk, na.rm = T)[[1]], 2)`. Blacks clearly rate the police on average lower than whites, and this difference is significant at p < `r myround(svyttest(police.rate.sc~black, d.all)$p.value[1], 3)`. I present the distribution for the scale for the full sample and by race below.
+
+```{r, echo = F}
+svyhist(~police.rate.sc, d.all, main = "Full Sample",
+        xlab = "Police Evaluations Scale")
+svyhist(~police.rate.sc, d.wht, main = "Whites Only",
+        xlab = "Police Evaluations Scale")
+svyhist(~police.rate.sc, d.blk, main = "Blacks Only",
+        xlab = "Police Evaluations Scale")
+```
+
+It's also potentially instructive to contrast whites and blacks in how these police evaluation items scale together. To get a sense for whether these capture summary evaluations across groups, I present alphas for the 5 items scaled together. Cronbach's alpha for whites is `r myround(cronbach(cbind(w.df$p.crim.solve, w.df$p.viol.crim, w.df$p.race.fair, w.df$p.exces.force, w.df$p.account))$alpha, 2)`, while for black it is `r myround(cronbach(cbind(b.df$p.crim.solve, b.df$p.viol.crim, b.df$p.race.fair, b.df$p.exces.force, b.df$p.account))$alpha, 2)`. Although a rough pass, the similarity suggests that blacks and whites use the same dimensions to evaluate the police. I could push further on this with some factor analyses if interested.
+
+###By class
+I created two separate measure of class based on tercile breakdowns of income and education. Each assigned repondents to an income or education tercile, however one version determined terciles based on the full weighted sample while the second looked within each racial group. Because the correlation between the two measures is `r myround(cor(cbind(cjs.df$class, cjs.df$class.rac))[2,1],2)` I use the class measure that's specific within each race to account for potential incomparabilities across groups.
+
+**Solving Crime**
+```{r, echo = F}
+round(prop.table(svytable(~p.crim.solve + class, d.all),2)*100)
+chisq.test(round(prop.table(svytable(~p.crim.solve + class, d.all),2)*100))
+```
+**Protecting people like you from violent crime**
+```{r, echo = F}
+round(prop.table(svytable(~p.viol.crim + class, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~p.viol.crim + class, d.all),2)*100))
+```
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+round(prop.table(svytable(~p.race.fair + class, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~p.race.fair + class, d.all),2)*100))
+```
+**Not using excessive force on suspects**
+```{r, echo = F}
+round(prop.table(svytable(~p.exces.force + class, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~p.exces.force + class, d.all),2)*100))
+```
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+round(prop.table(svytable(~p.account + class, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~p.account + class, d.all),2)*100))
+```
+
+As for the summary evaluation index, the table below proveis the mean for each class category. Descriptively higher class individuals tend to evaluate the police more positively. A 5 point difference exists between the lowest and highest class individuals, one significant at p < `r myround(svyttest(police.rate.sc~class.rac, subset(d.all, class.rac == 0 | class.rac == 1))$p.value[[1]], 3)`.
+
+```{r, echo = F}
+CLASS <- unique(cjs.df$class.rac)
+OUT <- array(NA, c(1, length(CLASS)))
+colnames(OUT) <- unique(cjs.df$class.rac)
+rownames(OUT) <- "mean"
+for(i in 1:length(CLASS)){
+  OUT[1,i] <- round(svymean(~police.rate.sc, 
+            subset(d.all, class.rac == CLASS[i]), 
+            na.rm = T), 2)
+}
+OUT
+```
+
+The plots below present the distribution of summary police evaluations for each class level. 
+
+```{r, echo = F}
+CLASS <- unique(cjs.df$class.rac)
+for(i in 1:length(CLASS)){
+svyhist(~police.rate.sc, 
+        subset(d.all, class.rac == CLASS[i]), 
+        main = paste(CLASS[i]),
+        xlab = "Police Evaluations Scale")
+}
+```
+
+
+I return to the alpha measure to contrast class category groups' police evaluations. The table below presents these tallies. No meaningful variation exists by class category, suggesting class does not shape which dimensions people rely on for evaluating the police.
+```{r, echo = F}
+CLASS <- unique(cjs.df$class.rac)
+OUT <- array(NA, c(1, length(CLASS)))
+colnames(OUT) <- unique(cjs.df$class.rac)
+rownames(OUT) <- "alpha"
+for(i in 1:length(CLASS)){
+  c.df <- subset(cjs.df, class.rac == CLASS[i])
+  OUT[1,i] <- round(cronbach(cbind(c.df$p.crim.solve, c.df$p.viol.crim, c.df$p.race.fair, c.df$p.exces.force, c.df$p.account))$alpha, 3)
+}
+OUT
+```
+
+###By Race and Class
+
+
+Returning to the summary evaluation index, the table below provides the means for each race/class category. Whereas the prior class-only results indicated that higher class individuals tended to evaluate the police more positively, this seems driven by whites. A 7 point difference exists between the lowest and highest class whites, but this gap is only 2 points for blacks. The former is significant at p < `r myround(svyttest(police.rate.sc~class.rac, subset(d.wht, class.rac == 0 | class.rac == 1))$p.value[[1]], 3)` while the latter is not (p = `r myround(svyttest(police.rate.sc~class.rac, subset(d.blk, class.rac == 0 | class.rac == 1))$p.value[[1]], 3)`).
+
+```{r, echo = F}
+CLASS <- unique(cjs.df$class.rac)
+OUT <- array(NA, c(2, length(CLASS)))
+colnames(OUT) <- unique(cjs.df$class.rac)
+rownames(OUT) <- c("mean - White", "mean - Black")
+for(i in 1:length(CLASS)){
+  OUT[1,i] <- round(svymean(~police.rate.sc, 
+            subset(d.wht, class.rac == CLASS[i]), 
+            na.rm = T), 2)
+  OUT[2,i] <- round(svymean(~police.rate.sc, 
+            subset(d.blk, class.rac == CLASS[i]), 
+            na.rm = T), 2)
+}
+OUT
+```
+
+
+Finally, I present the scale alphas in table below. The first row looks at whites across class, while the second looks at blacks by class. No meaningful variation exists according to class/race interaction, reinforcing the likelihood that people rely on the same dimensions for evaluating the police.
+```{r, echo = F}
+CLASS <- unique(cjs.df$class.rac)
+OUT <- array(NA, c(2, length(CLASS)))
+colnames(OUT) <- unique(cjs.df$class.rac)
+rownames(OUT) <- c("Alpha - Whites", "Alpha - Blacks")
+for(i in 1:length(CLASS)){
+  wc.df <- subset(cjs.df, class.rac == CLASS[i] & black == 0)
+  bc.df <- subset(cjs.df, class.rac == CLASS[i] & black == 1)
+  OUT[1,i] <- round(cronbach(cbind(wc.df$p.crim.solve, wc.df$p.viol.crim, wc.df$p.race.fair, wc.df$p.exces.force, wc.df$p.account))$alpha, 3)
+  OUT[2,i] <- round(cronbach(cbind(bc.df$p.crim.solve, bc.df$p.viol.crim, bc.df$p.race.fair, bc.df$p.exces.force, bc.df$p.account))$alpha, 3)
+}
+OUT
+```
+
+
+##Court Fairness
+###By race
+I break down each court fairness item based on the suffix. The first is whether the court will fairly apply the law, while the second two ask whether this is the case regardless of a person's class or race, resepctively. Again, I presented the response distribution in percentage points, broken down by race. The Chi$^2$ tests are again significant. Regardless of the prompt, blacks are on average less likely to think the courts in their area will be fair.
+
+**``fairly apply the law?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair + black, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair + black, d.all), 2)*100))
+```
+**``fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair.class + black, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair.class + black, d.all), 2)*100))
+```
+**``fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair.race + black, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair.race + black, d.all), 2)*100))
+```
+
+We also see interesting treatment effects within racial group. While there are no differences between the baseline condition and the class prime, the race prime decreases blacks' perceptions that courts will be fair. In contrast, the same prime increases whites' perceptions of fairness. These differences are small, however. The Cohen's D effect size for whites is 0.06, whole for blacks it is 0.12. Even so, because of the divergent effects, the black-white gap in fairness evaluations grows by 5 percentage points, from 18 to 23 points.
+
+```{r, echo = F}
+summary(lm(court.fair.all ~ court.fair.treat*black, cjs.df, weights = wts_whole))
+```
+
+###By Class
+
+
+###By Race and Class
+
+##Police Respect
+###By race
+```{r, echo = F}
+round(prop.table(svytable(~respect.police + black, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~respect.police + black, d.all), 2)*100))
+```
+
+###By Class
+```{r, echo = F}
+round(prop.table(svytable(~respect.police + class, d.all), 2)*100)
+chisq.test(round(prop.table(svytable(~respect.police + class, d.all), 2)*100))
+```
+
+###By Race and Class
+
+##Police Quality ``Bad Apples''
