@@ -169,17 +169,17 @@ OUT
 ###By race
 I break down each court fairness item based on the suffix. The first is whether the court will fairly apply the law, while the second two ask whether this is the case regardless of a person's class or race, resepctively. Again, I presented the response distribution in percentage points, broken down by race. The Chi$^2$ tests are again significant. Regardless of the prompt, blacks are on average less likely to think the courts in their area will be fair.
 
-**``fairly apply the law?''**
+**''fairly apply the law?''**
 ```{r, echo = F}
 round(prop.table(svytable(~court.fair + black, d.all), 2)*100)
 chisq.test(round(prop.table(svytable(~court.fair + black, d.all), 2)*100))
 ```
-**``fairly apply the law, regardless of a person's class?''**
+**''fairly apply the law, regardless of a person's class?''**
 ```{r, echo = F}
 round(prop.table(svytable(~court.fair.class + black, d.all), 2)*100)
 chisq.test(round(prop.table(svytable(~court.fair.class + black, d.all), 2)*100))
 ```
-**``fairly apply the law, regardless of a person's race?''**
+**''fairly apply the law, regardless of a person's race?''**
 ```{r, echo = F}
 round(prop.table(svytable(~court.fair.race + black, d.all), 2)*100)
 chisq.test(round(prop.table(svytable(~court.fair.race + black, d.all), 2)*100))
@@ -242,7 +242,7 @@ round(prop.table(svytable(~respect.police + class.rac, d.blk), 2)*100)
 # chisq.test(round(prop.table(svytable(~respect.police + class, d.wht), 2)*100))
 ```
 
-##Police Quality ``Bad Apples''
+##Police Quality ''Bad Apples''
 ###By race
 ```{r, echo = F}
 round(prop.table(svytable(~pol.badapples + black, d.all), 2)*100)

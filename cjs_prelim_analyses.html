@@ -356,6 +356,66 @@ $(document).ready(function () {
 </div>
 <div id="by-class-1" class="section level3">
 <h3>By Class</h3>
+<p><strong>``fairly apply the law?’’</strong></p>
+<pre><code>##                    class.rac
+## court.fair           0 0.25 0.5 0.75  1
+##   0                 11    7   9    6  6
+##   0.333333333333333 20   20  17   20 15
+##   0.666666666666667 47   50  51   48 53
+##   1                 22   23  24   27 26</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~court.fair + class.rac, d.all), 2) *     100)
+## X-squared = 4.72, df = 12, p-value = 0.9667</code></pre>
+<p><strong>``fairly apply the law, regardless of a person’s class?’’</strong></p>
+<pre><code>##                    class.rac
+## court.fair.class     0 0.25 0.5 0.75  1
+##   0                 10    9   9    9  6
+##   0.333333333333333 19   19  17   19 16
+##   0.666666666666667 49   46  49   45 48
+##   1                 22   25  24   27 31</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~court.fair.class + class.rac, d.all),     2) * 100)
+## X-squared = 3.555, df = 12, p-value = 0.9902</code></pre>
+<p><strong>``fairly apply the law, regardless of a person’s race?’’</strong></p>
+<pre><code>##                    class.rac
+## court.fair.race      0 0.25 0.5 0.75  1
+##   0                 12   11   9    8  9
+##   0.333333333333333 17   19  20   19 14
+##   0.666666666666667 41   44  40   43 48
+##   1                 30   25  30   30 29</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~court.fair.race + class.rac, d.all),     2) * 100)
+## X-squared = 3.9198, df = 12, p-value = 0.9848</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = court.fair.all ~ court.fair.treat * class.rac, data = cjs.df, 
+##     weights = wts_whole)
+## 
+## Weighted Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.62974 -0.21365  0.02581  0.07588  0.91059 
+## 
+## Coefficients:
+##                                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                      6.072e-01  8.221e-03  73.856  &lt; 2e-16 ***
+## court.fair.treatRace             7.624e-03  1.176e-02   0.648    0.517    
+## court.fair.treatClass            3.421e-05  1.164e-02   0.003    0.998    
+## class.rac                        5.662e-02  1.447e-02   3.913 9.19e-05 ***
+## court.fair.treatRace:class.rac  -1.513e-02  2.089e-02  -0.724    0.469    
+## court.fair.treatClass:class.rac  1.509e-03  2.046e-02   0.074    0.941    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.2956 on 11156 degrees of freedom
+##   (4 observations deleted due to missingness)
+## Multiple R-squared:  0.00349,    Adjusted R-squared:  0.003043 
+## F-statistic: 7.814 on 5 and 11156 DF,  p-value: 2.37e-07</code></pre>
 </div>
 <div id="by-race-and-class-1" class="section level3">
 <h3>By Race and Class</h3>
@@ -371,34 +431,57 @@ $(document).ready(function () {
 ##              1 18 44
 ##              2 49 34
 ##              3 30 12</code></pre>
-<pre><code>## 
-##  Pearson's Chi-squared test
-## 
-## data:  round(prop.table(svytable(~respect.police + black, d.all), 2) *     100)
-## X-squared = 26.657, df = 3, p-value = 6.946e-06</code></pre>
 </div>
 <div id="by-class-2" class="section level3">
 <h3>By Class</h3>
-<pre><code>##               class
+<pre><code>##               class.rac
 ## respect.police  0 0.25 0.5 0.75  1
-##              0  7    4   4    3  3
-##              1 27   26  25   24 24
-##              2 43   46  43   47 46
-##              3 23   24  28   26 26</code></pre>
-<pre><code>## Warning in chisq.test(round(prop.table(svytable(~respect.police + class, :
-## Chi-squared approximation may be incorrect</code></pre>
-<pre><code>## 
-##  Pearson's Chi-squared test
-## 
-## data:  round(prop.table(svytable(~respect.police + class, d.all), 2) *     100)
-## X-squared = 3.7396, df = 12, p-value = 0.9877</code></pre>
+##              0  6    4   5    3  4
+##              1 24   25  26   25 27
+##              2 45   46  43   46 46
+##              3 25   25  27   26 24</code></pre>
 </div>
 <div id="by-race-and-class-2" class="section level3">
 <h3>By Race and Class</h3>
+<p><strong>Whites</strong></p>
+<pre><code>##               class.rac
+## respect.police  0 0.25 0.5 0.75  1
+##              0  3    2   2    2  2
+##              1 20   20  18   16 17
+##              2 48   49  47   51 51
+##              3 29   29  33   31 30</code></pre>
+<p><strong>Blacks</strong></p>
+<pre><code>##               class.rac
+## respect.police  0 0.25 0.5 0.75  1
+##              0 15    9  11    6  6
+##              1 34   39  47   52 53
+##              2 37   39  31   32 32
+##              3 14   13  11   10  9</code></pre>
 </div>
 </div>
 <div id="police-quality-bad-apples" class="section level2">
 <h2>Police Quality ``Bad Apples’’</h2>
+<div id="by-race-3" class="section level3">
+<h3>By race</h3>
+<pre><code>##              black
+## pol.badapples  0  1
+##             1 49 23
+##             2 19 34
+##             3 30 40
+##             4  1  4</code></pre>
+</div>
+<div id="by-class-3" class="section level3">
+<h3>By Class</h3>
+<pre><code>##              class.rac
+## pol.badapples  0 0.25 0.5 0.75  1
+##             1 42   42  42   43 41
+##             2 20   23  23   24 26
+##             3 35   33  33   32 31
+##             4  3    2   2    1  1</code></pre>
+</div>
+<div id="by-race-and-class-3" class="section level3">
+<h3>By Race and Class</h3>
+</div>
 </div>
 </div>
 
