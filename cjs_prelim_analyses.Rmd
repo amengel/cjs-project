@@ -221,7 +221,6 @@ for(i in 1:length(CLASS)){
 OUT
 ```
 
-
 ##Court Fairness
 ###By race
 I break down each court fairness item based on the suffix. The first is whether the court will fairly apply the law, while the second two ask whether this is the case regardless of a person's class or race, resepctively. Again, I presented the response distribution in percentage points, broken down by race. The Chi$^2$ tests are again significant. Regardless of the prompt, blacks are on average less likely to think the courts in their area will be fair.
@@ -249,7 +248,7 @@ summary(lm(court.fair.all ~ court.fair.treat*black, cjs.df, weights = wts_whole)
 ```
 
 ###By Class
-
+Turning to class, the analyses below suggest little variation exists by class category in fairness percpetions. Moreover, this holds regardless of the prompt. Even when primed to think about class, low and high class respondents think the courts in their area will fairly apply the law.
 **``fairly apply the law?''**
 ```{r, echo = F}
 round(prop.table(svytable(~court.fair + class.rac, d.all), 2)*100)
@@ -272,6 +271,48 @@ summary(lm(court.fair.all ~ court.fair.treat*class.rac, cjs.df, weights = wts_wh
 
 
 ###By Race and Class
+Finally, looking at the intersection of race and class, little variation again appears by class level. One interesting point is that for blacks, the class prime appears to have decreases the number of lower class blacks believing the courts in their area will fairly apply the law. The p-vale on the Chi$^2$ test is `r myround(chisq.test(round(prop.table(svytable(~court.fair.class + class.rac, d.blk), 2)*100))$p.value, 3)`.
+
+**Whites: ``fairly apply the law?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair + class.rac, d.wht), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair + class.rac, d.wht), 2)*100))
+```
+**Blacks: ``fairly apply the law?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair + class.rac, d.blk), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair + class.rac, d.blk), 2)*100))
+```
+**Whites: ``fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair.class + class.rac, d.wht), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair.class + class.rac, d.wht), 2)*100))
+```
+**Blacks: ``fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair.class + class.rac, d.blk), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair.class + class.rac, d.blk), 2)*100))
+```
+**Whites: ``fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair.race + class.rac, d.wht), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair.race + class.rac, d.wht), 2)*100))
+```
+**Blacks: ``fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+round(prop.table(svytable(~court.fair.race + class.rac, d.blk), 2)*100)
+chisq.test(round(prop.table(svytable(~court.fair.race + class.rac, d.blk), 2)*100))
+```
+
+However, we get more nuance by looking at potential treatment effects. For whites in the class prime, higher class whites are marginally more likely to think the courts in their area are fair. The difference between low and high class whites here is 4 percentage points (p = 0.066). This is on top of a 5 point class difference in the baseline condition (p < 0.000).
+```{r, echo = F}
+summary(lm(court.fair.all ~ court.fair.treat*class.rac, cjs.df, weights = wts_white))
+```
+As for blacks, a different picture emerges. The results below show a sharp divergence in fairness evaluations by class depending on the question wording. For those receiving the class prime, higher class blacks are 9 points less likely to believe the courts in their area are fair than their lower class counterparts (p < 0.05). Interestingly, a similar effect manifests for higher class blacks receiving the race prime, although the magnitude is smaller and imprecisely estimated ($\beta = -0.07$, p < 0.1).  
+```{r, echo = F}
+summary(lm(court.fair.all ~ court.fair.treat*class.rac, cjs.df, weights = wts_black))
+```
+
 
 ##Police Respect
 ###By race

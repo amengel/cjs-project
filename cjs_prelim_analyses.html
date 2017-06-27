@@ -494,7 +494,7 @@ $(document).ready(function () {
 </div>
 <div id="by-class-1" class="section level3">
 <h3>By Class</h3>
-<p><strong>``fairly apply the law?’’</strong></p>
+<p>Turning to class, the analyses below suggest little variation exists by class category in fairness percpetions. Moreover, this holds regardless of the prompt. Even when primed to think about class, low and high class respondents think the courts in their area will fairly apply the law. <strong>``fairly apply the law?’’</strong></p>
 <pre><code>##                    class.rac
 ## court.fair           0 0.25 0.5 0.75  1
 ##   0                 11    7   9    6  6
@@ -557,6 +557,129 @@ $(document).ready(function () {
 </div>
 <div id="by-race-and-class-1" class="section level3">
 <h3>By Race and Class</h3>
+<p>Finally, looking at the intersection of race and class, little variation again appears by class level. One interesting point is that for blacks, the class prime appears to have decreases the number of lower class blacks believing the courts in their area will fairly apply the law. The p-vale on the Chi<span class="math inline">\(^2\)</span> test is 0.082.</p>
+<p><strong>Whites: ``fairly apply the law?’’</strong></p>
+<pre><code>##                    class.rac
+## court.fair           0 0.25 0.5 0.75  1
+##   0                  8    5   5    4  4
+##   0.333333333333333 19   15  12   14 14
+##   0.666666666666667 48   52  55   50 52
+##   1                 26   27  28   32 29</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~court.fair + class.rac, d.wht), 2) *     100)
+## X-squared = 5.0985, df = 12, p-value = 0.9546</code></pre>
+<p><strong>Blacks: ``fairly apply the law?’’</strong></p>
+<pre><code>##                    class.rac
+## court.fair           0 0.25 0.5 0.75  1
+##   0                 22   11  16   11 12
+##   0.333333333333333 26   35  27   35 20
+##   0.666666666666667 43   43  44   46 53
+##   1                  9   12  13    8 15</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~court.fair + class.rac, d.blk), 2) *     100)
+## X-squared = 16.43, df = 12, p-value = 0.1723</code></pre>
+<p><strong>Whites: ``fairly apply the law, regardless of a person’s class?’’</strong></p>
+<pre><code>##                    class.rac
+## court.fair.class     0 0.25 0.5 0.75  1
+##   0                  6    8   7    7  2
+##   0.333333333333333 20   18  13   13 10
+##   0.666666666666667 50   46  50   48 51
+##   1                 24   27  30   32 37</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~court.fair.class + class.rac, d.wht),     2) * 100)
+## X-squared = 11.76, df = 12, p-value = 0.4651</code></pre>
+<p><strong>Blacks: ``fairly apply the law, regardless of a person’s class?’’</strong></p>
+<pre><code>##                    class.rac
+## court.fair.class     0 0.25 0.5 0.75  1
+##   0                 25   12  16   15 15
+##   0.333333333333333 16   23  29   34 29
+##   0.666666666666667 46   45  47   38 41
+##   1                 13   20   9   12 15</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~court.fair.class + class.rac, d.blk),     2) * 100)
+## X-squared = 19.288, df = 12, p-value = 0.08181</code></pre>
+<p><strong>Whites: ``fairly apply the law, regardless of a person’s race?’’</strong></p>
+<pre><code>##                    class.rac
+## court.fair.race      0 0.25 0.5 0.75  1
+##   0                  8    8   4    6  5
+##   0.333333333333333 14   17  16   13 10
+##   0.666666666666667 44   44  44   44 52
+##   1                 34   30  36   37 33</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~court.fair.race + class.rac, d.wht),     2) * 100)
+## X-squared = 6.2091, df = 12, p-value = 0.9052</code></pre>
+<p><strong>Blacks: ``fairly apply the law, regardless of a person’s race?’’</strong></p>
+<pre><code>##                    class.rac
+## court.fair.race      0 0.25 0.5 0.75  1
+##   0                 28   20  19   14 21
+##   0.333333333333333 25   24  32   36 32
+##   0.666666666666667 33   44  36   45 35
+##   1                 14   12  14    5 11</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~court.fair.race + class.rac, d.blk),     2) * 100)
+## X-squared = 16.484, df = 12, p-value = 0.17</code></pre>
+<p>However, we get more nuance by looking at potential treatment effects. For whites in the class prime, higher class whites are marginally more likely to think the courts in their area are fair. The difference between low and high class whites here is 4 percentage points (p = 0.066). This is on top of a 5 point class difference in the baseline condition (p &lt; 0.000).</p>
+<pre><code>## 
+## Call:
+## lm(formula = court.fair.all ~ court.fair.treat * class.rac, data = cjs.df, 
+##     weights = wts_white)
+## 
+## Weighted Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.75490 -0.04959 -0.00782  0.21841  0.78941 
+## 
+## Coefficients:
+##                                  Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                      0.650394   0.008860  73.406  &lt; 2e-16 ***
+## court.fair.treatRace             0.018690   0.012716   1.470 0.141656    
+## court.fair.treatClass           -0.020307   0.012447  -1.632 0.102814    
+## class.rac                        0.054297   0.015789   3.439 0.000587 ***
+## court.fair.treatRace:class.rac  -0.006945   0.022665  -0.306 0.759291    
+## court.fair.treatClass:class.rac  0.040979   0.022318   1.836 0.066379 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.2764 on 8084 degrees of freedom
+##   (3076 observations deleted due to missingness)
+## Multiple R-squared:  0.007835,   Adjusted R-squared:  0.007221 
+## F-statistic: 12.77 on 5 and 8084 DF,  p-value: 2.188e-12</code></pre>
+<p>As for blacks, a different picture emerges. The results below show a sharp divergence in fairness evaluations by class depending on the question wording. For those receiving the class prime, higher class blacks are 9 points less likely to believe the courts in their area are fair than their lower class counterparts (p &lt; 0.05). Interestingly, a similar effect manifests for higher class blacks receiving the race prime, although the magnitude is smaller and imprecisely estimated (<span class="math inline">\(\beta = -0.07\)</span>, p &lt; 0.1).</p>
+<pre><code>## 
+## Call:
+## lm(formula = court.fair.all ~ court.fair.treat * class.rac, data = cjs.df, 
+##     weights = wts_black)
+## 
+## Weighted Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.2594 -0.1636  0.1036  0.1649  1.2823 
+## 
+## Coefficients:
+##                                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                      0.47710    0.01575  30.286   &lt;2e-16 ***
+## court.fair.treatRace            -0.00398    0.02242  -0.178   0.8591    
+## court.fair.treatClass            0.04734    0.02291   2.066   0.0389 *  
+## class.rac                        0.07406    0.02865   2.585   0.0098 ** 
+## court.fair.treatRace:class.rac  -0.07068    0.04217  -1.676   0.0939 .  
+## court.fair.treatClass:class.rac -0.09094    0.04075  -2.232   0.0257 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.3043 on 3066 degrees of freedom
+##   (8094 observations deleted due to missingness)
+## Multiple R-squared:  0.005924,   Adjusted R-squared:  0.004303 
+## F-statistic: 3.654 on 5 and 3066 DF,  p-value: 0.002677</code></pre>
 </div>
 </div>
 <div id="police-respect" class="section level2">
