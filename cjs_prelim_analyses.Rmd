@@ -574,7 +574,350 @@ interplot(csolve.6, var1 = "black", var2 = "peer.felony") +
 ```
 
 ###Employment
+####Employed in the Government
+Government-employed individuals are generally more positive in their evaluations of the police, but these differences manifest only for blacks. Black respondents still on average evaluate the police worse, but those employed in government at some level more positive in varying degrees. What varies is the effect magnitude.
+**Solving Crime**
+```{r, echo = F}
+csolve.1 <- lm(p.crim.solve ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(csolve.1)
+interplot(csolve.1, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(csolve.1, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Protecting people like you from violent crime**
+```{r, echo = F}
+csolve.2 <- lm(p.viol.crim ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(csolve.2)
+interplot(csolve.2, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(csolve.2, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+csolve.3 <- lm(p.race.fair ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(csolve.3)
+interplot(csolve.3, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(csolve.3, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Not using excessive force on suspects**
+```{r, echo = F}
+csolve.4 <- lm(p.exces.force ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(csolve.4)
+interplot(csolve.4, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(csolve.4, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+csolve.5 <- lm(p.account ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(csolve.5)
+interplot(csolve.5, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(csolve.5, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Summary Evaluation Index**
+```{r, echo = F}
+csolve.6 <- lm(police.rate.sc ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(csolve.6)
+interplot(csolve.6, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(csolve.6, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+####Employed in the Criminal Justice System
+A similar pattern holds when looking at whether or not respondents are employed in the criminal justice system. Black respondents employed in the criminal justice system evaluate the police more positively. CJS employement does not appear to have a systematic influence on whites' attitudes.
+**Solving Crime**
+```{r, echo = F}
+csolve.1 <- lm(p.crim.solve ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(csolve.1)
+interplot(csolve.1, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(csolve.1, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Protecting people like you from violent crime**
+```{r, echo = F}
+csolve.2 <- lm(p.viol.crim ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(csolve.2)
+interplot(csolve.2, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(csolve.2, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+csolve.3 <- lm(p.race.fair ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(csolve.3)
+interplot(csolve.3, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(csolve.3, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Not using excessive force on suspects**
+```{r, echo = F}
+csolve.4 <- lm(p.exces.force ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(csolve.4)
+interplot(csolve.4, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(csolve.4, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+csolve.5 <- lm(p.account ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(csolve.5)
+interplot(csolve.5, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(csolve.5, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Summary Evaluation Index**
+```{r, echo = F}
+csolve.6 <- lm(police.rate.sc ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(csolve.6)
+interplot(csolve.6, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(csolve.6, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+####Criminal Justice System Profession
+Finally, considering the specific position in the criminal justice system, nothing systematic appears to manifest. Some items and some occupations light up, but that varies. Moreover, nothing systematically varies between whites and blacks.
+
+**Solving Crime**
+```{r, echo = F}
+csolve.1 <- lm(p.crim.solve ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(csolve.1)
+# interplot(respol.1, var1 = "employ.cjs", var2 = "black") +
+#   labs(title = "Racial Differences by CJS Job Status",
+#        x = "White vs Black",
+#        y = "Marginal Effect of having a CJS Job") +
+#   theme_bw()
+# interplot(respol.1, var1 = "black", var2 = "employ.cjs") +
+#   labs(title = "Racial Differences by CJS Job Status",
+#        x = "CJS Job Status",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+
+**Protecting people like you from violent crime**
+```{r, echo = F}
+csolve.2 <- lm(p.viol.crim ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(csolve.2)
+# interplot(csolve.2, var1 = "employ.cjs", var2 = "black") +
+#   labs(title = "Racial Differences by CJS Employment",
+#        x = "White vs Black",
+#        y = "Marginal Effect of CJS Employment") +
+#   theme_bw()
+# interplot(csolve.2, var1 = "black", var2 = "employ.cjs") +
+#   labs(title = "Racial Differences by CJS Employment",
+#        x = "CJS Employment Status",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+csolve.3 <- lm(p.race.fair ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(csolve.3)
+# interplot(csolve.3, var1 = "employ.cjs", var2 = "black") +
+#   labs(title = "Racial Differences by CJS Employment",
+#        x = "White vs Black",
+#        y = "Marginal Effect of CJS Employment") +
+#   theme_bw()
+# interplot(csolve.3, var1 = "black", var2 = "employ.cjs") +
+#   labs(title = "Racial Differences by CJS Employment",
+#        x = "CJS Employment Status",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+
+**Not using excessive force on suspects**
+```{r, echo = F}
+csolve.4 <- lm(p.exces.force ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(csolve.4)
+# interplot(csolve.4, var1 = "employ.cjs", var2 = "black") +
+#   labs(title = "Racial Differences by CJS Employment",
+#        x = "White vs Black",
+#        y = "Marginal Effect of CJS Employment") +
+#   theme_bw()
+# interplot(csolve.4, var1 = "black", var2 = "employ.cjs") +
+#   labs(title = "Racial Differences by CJS Employment",
+#        x = "CJS Employment Status",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+csolve.5 <- lm(p.account ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(csolve.5)
+# interplot(csolve.5, var1 = "employ.cjs", var2 = "black") +
+#   labs(title = "Racial Differences by CJS Employment",
+#        x = "White vs Black",
+#        y = "Marginal Effect of CJS Employment") +
+#   theme_bw()
+# interplot(csolve.5, var1 = "black", var2 = "employ.cjs") +
+#   labs(title = "Racial Differences by CJS Employment",
+#        x = "CJS Employment Status",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+
+**Summary Evaluation Index**
+```{r, echo = F}
+csolve.6 <- lm(police.rate.sc ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(csolve.6)
+# interplot(csolve.6, var1 = "employ.cjs", var2 = "black") +
+#   labs(title = "Racial Differences by CJS Employment",
+#        x = "White vs Black",
+#        y = "Marginal Effect of CJS Employment") +
+#   theme_bw()
+# interplot(csolve.6, var1 = "black", var2 = "employ.cjs") +
+#   labs(title = "Racial Differences by CJS Employment",
+#        x = "CJS Employment Status",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+
+
 ###Racial Group Views
+####Racial Resentment
+**Solving Crime**
+```{r, echo = F}
+csolve.1 <- lm(p.crim.solve ~ rr.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.1)
+```
+
+**Protecting people like you from violent crime**
+```{r, echo = F}
+csolve.2 <- lm(p.viol.crim ~ rr.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.2)
+```
+
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+csolve.3 <- lm(p.race.fair ~ rr.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.3)
+```
+
+**Not using excessive force on suspects**
+```{r, echo = F}
+csolve.4 <- lm(p.exces.force ~ rr.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.4)
+```
+
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+csolve.5 <- lm(p.account ~ rr.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.5)
+```
+
+**Summary Evaluation Index**
+```{r, echo = F}
+csolve.6 <- lm(police.rate.sc ~ rr.sc, data = cjs.df, weights = wts_whole,
+               subset = black == 0)
+summary(csolve.6)
+```
+####White Linked Fate
+
+####Black Linked Fate
+
+
 ###Class Fragility
 
 ##Court Fairness
