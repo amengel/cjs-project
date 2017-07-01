@@ -584,9 +584,95 @@ interplot(csolve.6, var1 = "black", var2 = "peer.felony") +
 ###Class Fragility
 ##Police Respect
 ###Social Experiences
+####Police Abused Friends/Family
+Having peers who have been mistreated by the police helps explain variation in perceptions about whether or not beleiving that respecting the police makes civilian-police interactions smoother. Mistreating by the police decreases belief that respecting the police makes interactions smoother. This works for both whites and blacks, but whites are more responsive. Moreover, the black-white gap in the outcome grows smaller as mistreatement increases.
+```{r, echo = F}
+respol.1 <- lm(respect.police ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+interplot(respol.1, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(respol.1, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+####Peers convicted of a Felony
+A similar effect holds when turning to whether or not a respondent has peers with felony convictions. Here, while racial difference in responsiveness exist, the gap is smaller. Moreover, the racial gap on the outcome grows slightly smaller as peers with convictions increase.
+```{r, echo = F}
+respol.1 <- lm(respect.police ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+interplot(respol.1, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(respol.1, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
 ###Employment
+####Employed in the Government
+Being employed in some level of government helps explain the black-white gap on this outcome as well. First, the marginal effect of employment is larger for blacks than whites. Second, the black-white gap grows smaller for those employed by the government.
+```{r, echo = F}
+respol.1 <- lm(respect.police ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+interplot(respol.1, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(respol.1, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+####Employed in the Criminal Justice System
+A similar pattern holds when looking at variation by whether or not respondents are employed in the criminal justice system. Employment here matters solely for blacks. Employment improves perspectives on respecting the police by half a scale point. The racial gap in evaluations effectively disappears.
+```{r, echo = F}
+respol.1 <- lm(respect.police ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+interplot(respol.1, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(respol.1, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+####Criminal Justice System Profession
+Finally, little systematically varies by a respondent's specific position in the criminal justice system.
+```{r, include = F}
+respol.1 <- lm(respect.police ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+# interplot(respol.1, var1 = "as.factor(cjs.pos)8", var2 = "black") +
+#   labs(title = "Racial Differences by CJS Job",
+#        x = "White vs Black",
+#        y = "Marginal Effect of having a CJS Job: ") +
+#   theme_bw()
+# interplot(respol.1, var1 = "black", var2 = "cjs.pos") +
+#   labs(title = "Racial Differences by CJS Job",
+#        x = "CJS Job Status",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+
 ###Racial Group Views
 ###Class Fragility
+
 ##Police Quality "Bad Apples"
 ###Social Experiences
 ###Employment
