@@ -655,7 +655,7 @@ interplot(respol.1, var1 = "black", var2 = "employ.cjs") +
 
 ####Criminal Justice System Profession
 Finally, little systematically varies by a respondent's specific position in the criminal justice system.
-```{r, include = F}
+```{r, echo = F}
 respol.1 <- lm(respect.police ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
 summary(respol.1)
 # interplot(respol.1, var1 = "as.factor(cjs.pos)8", var2 = "black") +
@@ -672,6 +672,39 @@ summary(respol.1)
 
 ###Racial Group Views
 ###Class Fragility
+####Family class growing up
+Considering variation based on family background, little varies. Blacks on average have less positive views, but nothing varies based on childhood class by either racial group.
+```{r, echo = F}
+respol.1 <- lm(respect.police ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+# interplot(respol.1, var1 = "chood.class", var2 = "black") +
+#   labs(title = "Racial Differences by Childhood Class",
+#        x = "White vs Black",
+#        y = "Marginal Effect of Childhood Class") +
+#   theme_bw()
+# interplot(respol.1, var1 = "black", var2 = "chood.class") +
+#   labs(title = "Racial Differences by Childhood Class",
+#        x = "Income Level",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+
+####Current income
+Income does more to shape perspectives on respecting the police. Income matters more among whites than blacks, with higher income whites holding more positive views about respecting the police. Income doesn't matter for blacks. Consequently, with higher income whites becoming increasingly positive, the black-white racial gap increases as income increases. 
+```{r, echo = F}
+respol.1 <- lm(respect.police ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+interplot(respol.1, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(respol.1, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
 
 ##Police Quality "Bad Apples"
 ###Social Experiences
