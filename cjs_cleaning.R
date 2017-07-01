@@ -122,12 +122,14 @@ cjs.df$blk.lfate[which(cjs.df$R002 == 0)] <- 0
 cjs.df$blk.lfate[which(cjs.df$R003 == 0)] <- 1
 cjs.df$blk.lfate[which(cjs.df$R003 == 1)] <- 2
 cjs.df$blk.lfate[which(cjs.df$R003 == 2)] <- 3
+cjs.df$blk.lfate.sc <- cjs.df$blk.lfate/3
 
 cjs.df$wht.lfate <- NA
 cjs.df$wht.lfate[which(cjs.df$R004 == 0)] <- 0
 cjs.df$wht.lfate[which(cjs.df$R004B == 0)] <- 1
 cjs.df$wht.lfate[which(cjs.df$R004B == 1)] <- 2
 cjs.df$wht.lfate[which(cjs.df$R004B == 2)] <- 3
+cjs.df$wht.lfate.sc <- cjs.df$wht.lfate/3
 
 #----------------------------------------------------------------------------------------------------#
 # Recoding outcomes
