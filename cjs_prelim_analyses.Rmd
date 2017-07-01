@@ -671,6 +671,27 @@ summary(respol.1)
 ```
 
 ###Racial Group Views
+####Racial Resentment
+Whites' levels of racial resentment help explain beliefs about respecting the police. Min-max changes in racial resentment amount to over a category shift in the outcome.
+```{r, echo = F}
+respol.1 <- lm(respect.police ~ rr_sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(respol.1)
+```
+####White Linked Fate
+Whites' linked fate also helps explain the outcome, but the magnitude is small. A min-max change amounts to roughly a 1/7 a category change in the outcome.
+```{r, echo = F}
+respol.1 <- lm(respect.police ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(respol.1)
+```
+####Black Linked Fate
+A similar effect holds for black linked fate. A min-max change amounts to nearly a 1/5 of a category change in the outcome.
+```{r, echo = F}
+respol.1 <- lm(respect.police ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(respol.1)
+```
 ###Class Fragility
 ####Family class growing up
 Considering variation based on family background, little varies. Blacks on average have less positive views, but nothing varies based on childhood class by either racial group.
