@@ -341,18 +341,56 @@ round(prop.table(svytable(~respect.police + class.rac, d.blk), 2)*100)
 chisq.test(round(prop.table(svytable(~respect.police + class, d.blk), 2)*100))
 ```
 
-##Police Quality "Bad Apples''
+##Police Quality "Bad Apples"
+Finally, respondents reported whether or not incidents of police corruption were systemic or just "bad apples." Again, responses vary substantially by race, but not class. 34% of black respondents see these incidents as systemic issues, 23% as bad apples, and 40% a little bit of both. In contrast, 49% of whites focus on bad apples, and only 19% respond that these issues reflect systemic problems. No such variation occurs across class categories. Each class group sees a little over 40% emphasizing bad apples, with between 20 and 26% reponding that it's a systemic issue. It's interesting to note that the emphasis on systemic problems rises by class, but the overall distribution doesn't meaningfully change. 
 
 ###By race
 ```{r, echo = F}
 round(prop.table(svytable(~pol.badapples + black, d.all), 2)*100)
-#chisq.test(round(prop.table(svytable(~respect.police + black, d.all), 2)*100))
+chisq.test(round(prop.table(svytable(~pol.badapples + black, d.all), 2)*100))
 ```
 
 ###By Class
 ```{r, echo = F}
 round(prop.table(svytable(~pol.badapples + class.rac, d.all), 2)*100)
-# chisq.test(round(prop.table(svytable(~respect.police + class, d.all), 2)*100))
+chisq.test(round(prop.table(svytable(~pol.badapples + class.rac, d.all), 2)*100))
 ```
 
 ###By Race and Class
+Turning to within-group differences, nothing signficantly varies. Even so, there's interesting descriptive variation within blacks. Higher class blacks are less likely to report that police corruption comes from bad apples, and are more likely to emphasize systemic issues, than are lower class blacks. The proportion reporting that both issues matter stays effectively the same.
+
+**Whites**
+```{r, echo = F}
+round(prop.table(svytable(~pol.badapples + class.rac, d.wht), 2)*100)
+chisq.test(round(prop.table(svytable(~pol.badapples + class, d.wht), 2)*100))
+```
+**Blacks**
+```{r, echo = F}
+round(prop.table(svytable(~pol.badapples + class.rac, d.blk), 2)*100)
+chisq.test(round(prop.table(svytable(~pol.badapples + class, d.blk), 2)*100))
+```
+
+
+#Explaining Item Variation
+##Police Fairness Evaluations
+###Social Experiences
+
+###Employment
+###Racial Group Views
+###Class Fragility
+
+##Court Fairness
+###Social Experiences
+###Employment
+###Racial Group Views
+###Class Fragility
+##Police Respect
+###Social Experiences
+###Employment
+###Racial Group Views
+###Class Fragility
+##Police Quality "Bad Apples"
+###Social Experiences
+###Employment
+###Racial Group Views
+###Class Fragility

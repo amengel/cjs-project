@@ -745,14 +745,25 @@ $(document).ready(function () {
 ## X-squared = 13.436, df = 12, p-value = 0.3382</code></pre>
 </div>
 </div>
-<div id="police-quality-bad-apples-by-race" class="section level2">
-<h2>Police Quality “Bad Apples’’ ###By race</h2>
+<div id="police-quality-bad-apples" class="section level2">
+<h2>Police Quality “Bad Apples”</h2>
+<p>Finally, respondents reported whether or not incidents of police corruption were systemic or just “bad apples.” Again, responses vary substantially by race, but not class. 34% of black respondents see these incidents as systemic issues, 23% as bad apples, and 40% a little bit of both. In contrast, 49% of whites focus on bad apples, and only 19% respond that these issues reflect systemic problems. No such variation occurs across class categories. Each class group sees a little over 40% emphasizing bad apples, with between 20 and 26% reponding that it’s a systemic issue. It’s interesting to note that the emphasis on systemic problems rises by class, but the overall distribution doesn’t meaningfully change.</p>
+<div id="by-race-3" class="section level3">
+<h3>By race</h3>
 <pre><code>##              black
 ## pol.badapples  0  1
 ##             1 49 23
 ##             2 19 34
 ##             3 30 40
 ##             4  1  4</code></pre>
+<pre><code>## Warning in chisq.test(round(prop.table(svytable(~pol.badapples + black, :
+## Chi-squared approximation may be incorrect</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~pol.badapples + black, d.all), 2) *     100)
+## X-squared = 16.844, df = 3, p-value = 0.0007608</code></pre>
+</div>
 <div id="by-class-3" class="section level3">
 <h3>By Class</h3>
 <pre><code>##              class.rac
@@ -761,9 +772,108 @@ $(document).ready(function () {
 ##             2 20   23  23   24 26
 ##             3 35   33  33   32 31
 ##             4  3    2   2    1  1</code></pre>
+<pre><code>## Warning in chisq.test(round(prop.table(svytable(~pol.badapples +
+## class.rac, : Chi-squared approximation may be incorrect</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~pol.badapples + class.rac, d.all),     2) * 100)
+## X-squared = 2.6766, df = 12, p-value = 0.9974</code></pre>
 </div>
 <div id="by-race-and-class-3" class="section level3">
 <h3>By Race and Class</h3>
+<p>Turning to within-group differences, nothing signficantly varies. Even so, there’s interesting descriptive variation within blacks. Higher class blacks are less likely to report that police corruption comes from bad apples, and are more likely to emphasize systemic issues, than are lower class blacks. The proportion reporting that both issues matter stays effectively the same.</p>
+<p><strong>Whites</strong></p>
+<pre><code>##              class.rac
+## pol.badapples  0 0.25 0.5 0.75  1
+##             1 45   47  49   51 50
+##             2 19   20  19   20 22
+##             3 34   31  30   28 27
+##             4  2    1   1    1  1</code></pre>
+<pre><code>## Warning in chisq.test(round(prop.table(svytable(~pol.badapples + class, :
+## Chi-squared approximation may be incorrect</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~pol.badapples + class, d.wht), 2) *     100)
+## X-squared = 2.7666, df = 12, p-value = 0.997</code></pre>
+<p><strong>Blacks</strong></p>
+<pre><code>##              class.rac
+## pol.badapples  0 0.25 0.5 0.75  1
+##             1 27   26  22   21 17
+##             2 25   29  34   37 41
+##             3 42   42  41   41 39
+##             4  6    3   3    2  3</code></pre>
+<pre><code>## Warning in chisq.test(round(prop.table(svytable(~pol.badapples + class, :
+## Chi-squared approximation may be incorrect</code></pre>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  round(prop.table(svytable(~pol.badapples + class, d.blk), 2) *     100)
+## X-squared = 12.051, df = 12, p-value = 0.4416</code></pre>
+</div>
+</div>
+</div>
+<div id="explaining-item-variation" class="section level1">
+<h1>Explaining Item Variation</h1>
+<div id="police-fairness-evaluations-1" class="section level2">
+<h2>Police Fairness Evaluations</h2>
+<div id="social-experiences" class="section level3">
+<h3>Social Experiences</h3>
+</div>
+<div id="employment" class="section level3">
+<h3>Employment</h3>
+</div>
+<div id="racial-group-views" class="section level3">
+<h3>Racial Group Views</h3>
+</div>
+<div id="class-fragility" class="section level3">
+<h3>Class Fragility</h3>
+</div>
+</div>
+<div id="court-fairness-1" class="section level2">
+<h2>Court Fairness</h2>
+<div id="social-experiences-1" class="section level3">
+<h3>Social Experiences</h3>
+</div>
+<div id="employment-1" class="section level3">
+<h3>Employment</h3>
+</div>
+<div id="racial-group-views-1" class="section level3">
+<h3>Racial Group Views</h3>
+</div>
+<div id="class-fragility-1" class="section level3">
+<h3>Class Fragility</h3>
+</div>
+</div>
+<div id="police-respect-1" class="section level2">
+<h2>Police Respect</h2>
+<div id="social-experiences-2" class="section level3">
+<h3>Social Experiences</h3>
+</div>
+<div id="employment-2" class="section level3">
+<h3>Employment</h3>
+</div>
+<div id="racial-group-views-2" class="section level3">
+<h3>Racial Group Views</h3>
+</div>
+<div id="class-fragility-2" class="section level3">
+<h3>Class Fragility</h3>
+</div>
+</div>
+<div id="police-quality-bad-apples-1" class="section level2">
+<h2>Police Quality “Bad Apples”</h2>
+<div id="social-experiences-3" class="section level3">
+<h3>Social Experiences</h3>
+</div>
+<div id="employment-3" class="section level3">
+<h3>Employment</h3>
+</div>
+<div id="racial-group-views-3" class="section level3">
+<h3>Racial Group Views</h3>
+</div>
+<div id="class-fragility-3" class="section level3">
+<h3>Class Fragility</h3>
 </div>
 </div>
 </div>
