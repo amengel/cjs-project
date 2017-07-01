@@ -1,6 +1,6 @@
 ---
 title: "Preliminary Analyses"
-author: Drew Engelhardt
+#author: Drew Engelhardt
 #date: March 22, 2005
 output: html_document
 ---
@@ -8,6 +8,7 @@ output: html_document
 source("~/Documents/git/cjs project/cjs_cleaning.R")
 library(psy)
 library(broman)
+library(interplot)
 ```
 
 #Average Policy Differences By Race and Class
@@ -374,6 +375,203 @@ chisq.test(round(prop.table(svytable(~pol.badapples + class, d.blk), 2)*100))
 #Explaining Item Variation
 ##Police Fairness Evaluations
 ###Social Experiences
+####Police Abused Friends/Family
+I being by looking at whether respondents report that they or their peers had been mistreated by the police. Across all items, respondents are less positive in their evaluations of the police. Perhaps more interestingly, across all items the black-white evaluation gap closes as the frequency of mistreatment increases. The gaps remain, but they grow smaller by varying degrees.
+
+**Solving Crime**
+```{r, echo = F}
+csolve.1 <- lm(p.crim.solve ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(csolve.1)
+interplot(csolve.1, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(csolve.1, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Protecting people like you from violent crime**
+```{r, echo = F}
+csolve.2 <- lm(p.viol.crim ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(csolve.2)
+interplot(csolve.2, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(csolve.2, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+csolve.3 <- lm(p.race.fair ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(csolve.3)
+interplot(csolve.3, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(csolve.3, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Not using excessive force on suspects**
+```{r, echo = F}
+csolve.4 <- lm(p.exces.force ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(csolve.4)
+interplot(csolve.4, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(csolve.4, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+csolve.5 <- lm(p.account ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(csolve.5)
+interplot(csolve.5, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(csolve.5, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Summary Evaluation Index**
+```{r, echo = F}
+csolve.6 <- lm(police.rate.sc ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(csolve.6)
+interplot(csolve.6, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(csolve.6, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+####Peers convicted of a Felony
+I now turn to conditioning on whether a respondent has friends or family with felony convictions. Across all items, respondents with peers who have experienced a felony are less positive in their evaluations of the police. As with the police mistreatment item, in many cases the black-white evaluation gap closes as the number of peers with convictions increases. The gaps remain, but they grow smaller by varying degrees. Finally, relative to being mistreated by the police, the effect of social connections with felony convictions is smaller.
+
+**Solving Crime**
+```{r, echo = F}
+csolve.1 <- lm(p.crim.solve ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(csolve.1)
+interplot(csolve.1, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(csolve.1, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Protecting people like you from violent crime**
+```{r, echo = F}
+csolve.2 <- lm(p.viol.crim ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(csolve.2)
+interplot(csolve.2, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(csolve.2, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+csolve.3 <- lm(p.race.fair ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(csolve.3)
+interplot(csolve.3, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(csolve.3, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Not using excessive force on suspects**
+```{r, echo = F}
+csolve.4 <- lm(p.exces.force ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(csolve.4)
+interplot(csolve.4, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(csolve.4, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+csolve.5 <- lm(p.account ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(csolve.5)
+interplot(csolve.5, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(csolve.5, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Summary Evaluation Index**
+```{r, echo = F}
+csolve.6 <- lm(police.rate.sc ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(csolve.6)
+interplot(csolve.6, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(csolve.6, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
 
 ###Employment
 ###Racial Group Views
