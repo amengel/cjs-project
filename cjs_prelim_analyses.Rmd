@@ -313,18 +313,19 @@ As for blacks, a different picture emerges. The results below show a sharp diver
 summary(lm(court.fair.all ~ court.fair.treat*class.rac, cjs.df, weights = wts_black))
 ```
 
-
 ##Police Respect
+We also asked respondents whether give the police more respect would make civilian-police interactions go more smoothly. Higher values denote a belief that being more respectful would lead to more frequent positive interactions. The crosstabs by respondent characteristics suggest that race, not class, shapes these beliefs. Blacks are much less likely than whites to beleif respect leads to consistently positive interactions. 79% of whites believe respect leads to smooth interactions "most of the time" or "always." In contrast, only 46% of blacks believe this. Consequently, the Chi$^2$ p-value by race is `r myround(chisq.test(round(prop.table(svytable(~respect.police + black, d.all), 2)*100))$p.value, 3)`. Moreover, within racial groups class does not appear to offer any variation. Perpsectives on this item thus appear to follow more from racial background than class.
+
 ###By race
 ```{r, echo = F}
 round(prop.table(svytable(~respect.police + black, d.all), 2)*100)
-#chisq.test(round(prop.table(svytable(~respect.police + black, d.all), 2)*100))
+chisq.test(round(prop.table(svytable(~respect.police + black, d.all), 2)*100))
 ```
 
 ###By Class
 ```{r, echo = F}
 round(prop.table(svytable(~respect.police + class.rac, d.all), 2)*100)
-# chisq.test(round(prop.table(svytable(~respect.police + class, d.all), 2)*100))
+chisq.test(round(prop.table(svytable(~respect.police + class.rac, d.all), 2)*100))
 ```
 
 ###By Race and Class
@@ -332,15 +333,16 @@ round(prop.table(svytable(~respect.police + class.rac, d.all), 2)*100)
 **Whites**
 ```{r, echo = F}
 round(prop.table(svytable(~respect.police + class.rac, d.wht), 2)*100)
-# chisq.test(round(prop.table(svytable(~respect.police + class, d.wht), 2)*100))
+chisq.test(round(prop.table(svytable(~respect.police + class, d.wht), 2)*100))
 ```
 **Blacks**
 ```{r, echo = F}
 round(prop.table(svytable(~respect.police + class.rac, d.blk), 2)*100)
-# chisq.test(round(prop.table(svytable(~respect.police + class, d.wht), 2)*100))
+chisq.test(round(prop.table(svytable(~respect.police + class, d.blk), 2)*100))
 ```
 
-##Police Quality ''Bad Apples''
+##Police Quality "Bad Apples''
+
 ###By race
 ```{r, echo = F}
 round(prop.table(svytable(~pol.badapples + black, d.all), 2)*100)
