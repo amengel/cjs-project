@@ -872,51 +872,135 @@ summary(csolve.6)
 
 ###Racial Group Views
 ####Racial Resentment
+Whites' racial attitudes help explain their evaluations of the police. More resentful whites evaluate the police more positively. Importantly, however, these attitudes' influence varies by the outcome. Racial resentment is more important relative to evaluations of police accountability, using excessive force, and perceptions of whether the police treat racial groups equally.
 **Solving Crime**
 ```{r, echo = F}
-csolve.1 <- lm(p.crim.solve ~ rr.sc, data = cjs.df, weights = wts_white,
+csolve.1 <- lm(p.crim.solve ~ rr_sc, data = cjs.df, weights = wts_white,
                subset = black == 0)
 summary(csolve.1)
 ```
 
 **Protecting people like you from violent crime**
 ```{r, echo = F}
-csolve.2 <- lm(p.viol.crim ~ rr.sc, data = cjs.df, weights = wts_white,
+csolve.2 <- lm(p.viol.crim ~ rr_sc, data = cjs.df, weights = wts_white,
                subset = black == 0)
 summary(csolve.2)
 ```
 
 **Treating racial and ethnic groups equally**
 ```{r, echo = F}
-csolve.3 <- lm(p.race.fair ~ rr.sc, data = cjs.df, weights = wts_white,
+csolve.3 <- lm(p.race.fair ~ rr_sc, data = cjs.df, weights = wts_white,
                subset = black == 0)
 summary(csolve.3)
 ```
 
 **Not using excessive force on suspects**
 ```{r, echo = F}
-csolve.4 <- lm(p.exces.force ~ rr.sc, data = cjs.df, weights = wts_white,
+csolve.4 <- lm(p.exces.force ~ rr_sc, data = cjs.df, weights = wts_white,
                subset = black == 0)
 summary(csolve.4)
 ```
 
 **Holding police officers accountable for misconduct**
 ```{r, echo = F}
-csolve.5 <- lm(p.account ~ rr.sc, data = cjs.df, weights = wts_white,
+csolve.5 <- lm(p.account ~ rr_sc, data = cjs.df, weights = wts_white,
                subset = black == 0)
 summary(csolve.5)
 ```
 
 **Summary Evaluation Index**
 ```{r, echo = F}
-csolve.6 <- lm(police.rate.sc ~ rr.sc, data = cjs.df, weights = wts_whole,
+csolve.6 <- lm(police.rate.sc ~ rr_sc, data = cjs.df, weights = wts_white,
                subset = black == 0)
 summary(csolve.6)
 ```
 ####White Linked Fate
+Interestingly, whites' linked fate also appears to explain their evaluations of police. Higher levels of linked fate relate to worse evaluations of the police. Its influence also varies by outcome. Importantly, though, its effect seems relatively small. The effect for a min-max difference in linked fate is between 1/5 and 2/5 a category on the outcome.
+**Solving Crime**
+```{r, echo = F}
+csolve.1 <- lm(p.crim.solve ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.1)
+```
+
+**Protecting people like you from violent crime**
+```{r, echo = F}
+csolve.2 <- lm(p.viol.crim ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.2)
+```
+
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+csolve.3 <- lm(p.race.fair ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.3)
+```
+
+**Not using excessive force on suspects**
+```{r, echo = F}
+csolve.4 <- lm(p.exces.force ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.4)
+```
+
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+csolve.5 <- lm(p.account ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.5)
+```
+
+**Summary Evaluation Index**
+```{r, echo = F}
+csolve.6 <- lm(police.rate.sc ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(csolve.6)
+```
 
 ####Black Linked Fate
+The pattern of results is similar when looking at blacks' linked fate. The effects vary between 1/5 and 3/5 a scale point. Higher levels of linked fate relate to worse evaluations of the police.
+**Solving Crime**
+```{r, echo = F}
+csolve.1 <- lm(p.crim.solve ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(csolve.1)
+```
 
+**Protecting people like you from violent crime**
+```{r, echo = F}
+csolve.2 <- lm(p.viol.crim ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(csolve.2)
+```
+
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+csolve.3 <- lm(p.race.fair ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(csolve.3)
+```
+
+**Not using excessive force on suspects**
+```{r, echo = F}
+csolve.4 <- lm(p.exces.force ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(csolve.4)
+```
+
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+csolve.5 <- lm(p.account ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(csolve.5)
+```
+
+**Summary Evaluation Index**
+```{r, echo = F}
+csolve.6 <- lm(police.rate.sc ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(csolve.6)
+```
 
 ###Class Fragility
 
