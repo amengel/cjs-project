@@ -1003,6 +1003,202 @@ summary(csolve.6)
 ```
 
 ###Class Fragility
+####Family class growing up
+Exploring variation in class background as measured by childhood class background offers some interesting insights. Class operationalized this way matters for police evaluations, btu only systematically for black respondents. Higher class black respondents evaluate the police more positively on all outcomes.
+**Solving Crime**
+```{r, echo = F}
+csolve.1 <- lm(p.crim.solve ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(csolve.1)
+interplot(csolve.1, var1 = "chood.class", var2 = "black") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "White vs Black",
+       y = "Marginal Effect of Childhood Class") +
+  theme_bw()
+interplot(csolve.1, var1 = "black", var2 = "chood.class") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Protecting people like you from violent crime**
+```{r, echo = F}
+csolve.2 <- lm(p.viol.crim ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(csolve.2)
+interplot(csolve.2, var1 = "chood.class", var2 = "black") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "White vs Black",
+       y = "Marginal Effect of Childhood Class") +
+  theme_bw()
+interplot(csolve.2, var1 = "black", var2 = "chood.class") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+csolve.3 <- lm(p.race.fair ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(csolve.3)
+interplot(csolve.3, var1 = "chood.class", var2 = "black") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "White vs Black",
+       y = "Marginal Effect of Childhood Class") +
+  theme_bw()
+interplot(csolve.3, var1 = "black", var2 = "chood.class") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Not using excessive force on suspects**
+```{r, echo = F}
+csolve.4 <- lm(p.exces.force ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(csolve.4)
+interplot(csolve.4, var1 = "chood.class", var2 = "black") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "White vs Black",
+       y = "Marginal Effect of Childhood Class") +
+  theme_bw()
+interplot(csolve.4, var1 = "black", var2 = "chood.class") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+csolve.5 <- lm(p.account ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(csolve.5)
+interplot(csolve.5, var1 = "chood.class", var2 = "black") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "White vs Black",
+       y = "Marginal Effect of Childhood Class") +
+  theme_bw()
+interplot(csolve.5, var1 = "black", var2 = "chood.class") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Summary Evaluation Index**
+```{r, echo = F}
+csolve.6 <- lm(police.rate.sc ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(csolve.6)
+interplot(csolve.6, var1 = "chood.class", var2 = "black") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "White vs Black",
+       y = "Marginal Effect of Childhood Class") +
+  theme_bw()
+interplot(csolve.6, var1 = "black", var2 = "chood.class") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+
+####Current income
+As measured by income, class fragility also seems to matter on some outcomes. Higher income individuals tend to evaluate the police more positively, but this seems more influetial for whites.
+**Solving Crime**
+```{r, echo = F}
+csolve.1 <- lm(p.crim.solve ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(csolve.1)
+interplot(csolve.1, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(csolve.1, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Protecting people like you from violent crime**
+```{r, echo = F}
+csolve.2 <- lm(p.viol.crim ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(csolve.2)
+interplot(csolve.2, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(csolve.2, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Treating racial and ethnic groups equally**
+```{r, echo = F}
+csolve.3 <- lm(p.race.fair ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(csolve.3)
+interplot(csolve.3, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(csolve.3, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Not using excessive force on suspects**
+```{r, echo = F}
+csolve.4 <- lm(p.exces.force ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(csolve.4)
+interplot(csolve.4, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(csolve.4, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Holding police officers accountable for misconduct**
+```{r, echo = F}
+csolve.5 <- lm(p.account ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(csolve.5)
+interplot(csolve.5, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(csolve.5, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+**Summary Evaluation Index**
+```{r, echo = F}
+csolve.6 <- lm(police.rate.sc ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(csolve.6)
+interplot(csolve.6, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(csolve.6, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
 
 ##Court Fairness
 ###Social Experiences
