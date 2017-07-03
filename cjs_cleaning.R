@@ -132,8 +132,8 @@ cjs.df$wht.lfate[which(cjs.df$R004B == 2)] <- 3
 cjs.df$wht.lfate.sc <- cjs.df$wht.lfate/3
 
 cjs.df$lfate <- NA
-cjs.df$lfate[which(cjs.df$black == 1)] <- cjs.df$blk.lfate.sc
-cjs.df$lfate[which(cjs.df$black == 0)] <- cjs.df$wht.lfate.sc
+cjs.df$lfate[which(cjs.df$black == 1)] <- cjs.df$blk.lfate.sc[which(cjs.df$black == 1)]
+cjs.df$lfate[which(cjs.df$black == 0)] <- cjs.df$wht.lfate.sc[which(cjs.df$black == 0)]
 
 cjs.df$pid7 <- cjs.df$C015/6
 cjs.df$pid3[which(cjs.df$pid7 < 3)] <- -1
