@@ -131,6 +131,10 @@ cjs.df$wht.lfate[which(cjs.df$R004B == 1)] <- 2
 cjs.df$wht.lfate[which(cjs.df$R004B == 2)] <- 3
 cjs.df$wht.lfate.sc <- cjs.df$wht.lfate/3
 
+cjs.df$lfate <- NA
+cjs.df$lfate[which(cjs.df$black == 1)] <- cjs.df$blk.lfate.sc
+cjs.df$lfate[which(cjs.df$black == 0)] <- cjs.df$wht.lfate.sc
+
 cjs.df$pid7 <- cjs.df$C015/6
 cjs.df$pid3[which(cjs.df$pid7 < 3)] <- -1
 cjs.df$pid3[which(cjs.df$pid7 == 3)] <- 0
@@ -139,6 +143,7 @@ cjs.df$pid3[which(cjs.df$pid7 > 3)] <- 1
 #----------------------------------------------------------------------------------------------------#
 # Recoding outcomes
 #----------------------------------------------------------------------------------------------------#
+# p.crim.solve, p.viol.crim, p.race.fair, p.exces.force, p.account, police.rate.sc
 # Police Ratings
 cjs.df$p.crim.solve <- cjs.df$A005_1
 cjs.df$p.viol.crim <- cjs.df$A005_2
@@ -184,7 +189,9 @@ cjs.df$respect.police <- cjs.df$A007
 
 # Police Negligence/Corruption bad apples
 cjs.df$pol.badapples <- NA
-cjs.df$pol.badapples <- cjs.df$A008
+cjs.df$pol.badapples[which(cjs.df$A008 == 1)] <- 1
+cjs.df$pol.badapples[which(cjs.df$A008 == 3)] <- 2
+cjs.df$pol.badapples[which(cjs.df$A008 == 2)] <- 3
 
 ## Redefining survey objects
 d.all <- svydesign(~1, data = cjs.df, weights = ~wts_whole)
