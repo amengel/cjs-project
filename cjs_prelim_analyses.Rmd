@@ -1202,9 +1202,399 @@ interplot(csolve.6, var1 = "black", var2 = "inc") +
 
 ##Court Fairness
 ###Social Experiences
+####Police Abused Friends/Family
+Having peers abused by the police shapes evaluations of the court system. This effect is larger for white rather than black respondents, but regardless, the more friends and family a respondent has who have been mistreated by the police motivates a belief that the courts will not be fair. Moreover, these experiences reduce the gap in fairness beliefs between whites and blacks. Perhaps most interestingly, this pattern holds regardless of the frame presented. What varies is the relative influence these social experiences have.
+**''fairly apply the law?''**
+```{r, echo = F}
+cfair1 <- lm(court.fair ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(cfair1)
+interplot(cfair1, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(cfair1, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+cfair2 <- lm(court.fair.class ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(cfair2)
+interplot(cfair2, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(cfair2, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+cfair3 <- lm(court.fair.race ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(cfair3)
+interplot(cfair3, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(cfair3, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+####Peers convicted of a Felony
+A similar pattern holds with social experiences are measured by peers with felony convictions. These connections are more influential for whites, and the black-white gap in evaluations grows smaller as the number of connections increases. Finally, as before, these patterns hold across outcomes even as the magnitudes vary.
+**''fairly apply the law?''**
+```{r, echo = F}
+cfair1 <- lm(court.fair ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(cfair1)
+interplot(cfair1, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(cfair1, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+cfair2 <- lm(court.fair.class ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(cfair2)
+interplot(cfair2, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(cfair2, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+cfair3 <- lm(court.fair.race ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(cfair3)
+interplot(cfair3, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(cfair3, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
 ###Employment
+####Employed in the Government
+Government employment appears to shape evaluations of the court system. But what its influence varies by question wording. For the neutral and racial prime conditions, government employment does not shape whites' evaluations. For blacks, it matters. Blacks employed by the government hold more positive evaluations of the courts in both conditions such that the black-white evaluation gap disappears in the neutral condition and grows smaller in the race-prime condition. In the class condition, government employment motivates blacks and whites to view the courts more positively, but nothing shifts the racial gap in evaluations.
+**''fairly apply the law?''**
+```{r, echo = F}
+cfair1 <- lm(court.fair ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(cfair1)
+interplot(cfair1, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(cfair1, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+cfair2 <- lm(court.fair.class ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(cfair2)
+interplot(cfair2, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(cfair2, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+cfair3 <- lm(court.fair.race ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(cfair3)
+interplot(cfair3, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(cfair3, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+####Employed in the Criminal Justice System
+Employment in the criminal justice system also matters. But its influence varies by the prime. In the neutral prime, whites employed by the criminal justice sytem believe the courts to be less fair, but the opposite is true for blacks. Consequently, the racial gap in evaluations is smaller among those not employed in the CJS, and larger among those employed. Similarly, in the race-prime condition, both CJS employment status matters more for blacks than whites. For those employed in the criminal justice system, the black-white evaluation gap disappears. Finally, there are no difference by employment status or gaps by race in evaluations in the class-prime condition.
+**''fairly apply the law?''**
+```{r, echo = F}
+cfair1 <- lm(court.fair ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(cfair1)
+interplot(cfair1, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(cfair1, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+cfair2 <- lm(court.fair.class ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(cfair2)
+interplot(cfair2, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(cfair2, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+cfair3 <- lm(court.fair.race ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(cfair3)
+interplot(cfair3, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(cfair3, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+####Criminal Justice System Profession
+Finally, not much in a respondent's specific position in the CJS seems to systematically explain fairness evaluations. What does hold consistently is there's no relationship between any employment position and evaluations in the race-prime condition.
+**''fairly apply the law?''**
+```{r, echo = F}
+cfair1 <- lm(court.fair ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(cfair1)
+# interplot(cfair1, var1 = "peer.felony", var2 = "black") +
+#   labs(title = "Racial Differences by Peer Felony Conviction",
+#        x = "White vs Black",
+#        y = "Marginal Effect of Peer Felony Conviction") +
+#   theme_bw()
+# interplot(cfair1, var1 = "black", var2 = "peer.felony") +
+#   labs(title = "Racial Differences by Peer Felony Conviction",
+#        x = "Peers with Felony Convictions",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+**''fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+cfair2 <- lm(court.fair.class ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(cfair2)
+# interplot(cfair2, var1 = "peer.felony", var2 = "black") +
+#   labs(title = "Racial Differences by Peer Felony Conviction",
+#        x = "White vs Black",
+#        y = "Marginal Effect of Peer Felony Conviction") +
+#   theme_bw()
+# interplot(cfair2, var1 = "black", var2 = "peer.felony") +
+#   labs(title = "Racial Differences by Peer Felony Conviction",
+#        x = "Peers with Felony Convictions",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+**''fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+cfair3 <- lm(court.fair.race ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(cfair3)
+# interplot(cfair3, var1 = "peer.felony", var2 = "black") +
+#   labs(title = "Racial Differences by Peer Felony Conviction",
+#        x = "White vs Black",
+#        y = "Marginal Effect of Peer Felony Conviction") +
+#   theme_bw()
+# interplot(cfair3, var1 = "black", var2 = "peer.felony") +
+#   labs(title = "Racial Differences by Peer Felony Conviction",
+#        x = "Peers with Felony Convictions",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
 ###Racial Group Views
+####Racial Resentment
+Whites racial attitudes also explain court fairness evaluations. The more racially resentful see the courts in their area more fairly. More interestingly, this effect is larger in the class and race conditions than the neutral condition.
+**''fairly apply the law?''**
+```{r, echo = F}
+cfair1 <- lm(court.fair ~ rr_sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(cfair1)
+```
+**''fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+cfair2 <- lm(court.fair.class ~ rr_sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(cfair2)
+```
+**''fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+cfair3 <- lm(court.fair.race ~ rr_sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(cfair3)
+```
+####White Linked Fate
+Whites levels of linked fate are also related to their evaluations of the court system. Higher levels of linked fate relate to less fair views of the courts. Moreover, unlike their racial attitudes, linked fate functions the same across condition.
+**''fairly apply the law?''**
+```{r, echo = F}
+cfair1 <- lm(court.fair ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(cfair1)
+```
+**''fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+cfair2 <- lm(court.fair.class ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(cfair2)
+```
+**''fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+cfair3 <- lm(court.fair.race ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(cfair3)
+```
+####Black Linked Fate
+For blacks, linked fate matters, too. Individuals reporting greater linked fate view the courts in their area less fairly. As with whites, this effect doesn't vary by treatment condition.
+**''fairly apply the law?''**
+```{r, echo = F}
+cfair1 <- lm(court.fair ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(cfair1)
+```
+**''fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+cfair2 <- lm(court.fair.class ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(cfair2)
+```
+**''fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+cfair3 <- lm(court.fair.race ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(cfair3)
+```
 ###Class Fragility
+####Family class growing up
+Class fragility, operationalized by perceived childhood social class, shapes court evaluations to a degree, but this functions only for blacks, and not on all outcomes. For the neutral prompt, highest class blacks don't look different from whites in their evaluations of the court system's fairness. For the class prompt, class still matters for blacks, but the gap between racial groups doesn't meaningfully change. Finally, the race prompt sees no effect for class fragility here. Nothing differentiates blacks or whites.
+**''fairly apply the law?''**
+```{r, echo = F}
+cfair1 <- lm(court.fair ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(cfair1)
+interplot(cfair1, var1 = "chood.class", var2 = "black") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "White vs Black",
+       y = "Marginal Effect of Childhood Class") +
+  theme_bw()
+interplot(cfair1, var1 = "black", var2 = "chood.class") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "Childhood Class",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+cfair2 <- lm(court.fair.class ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(cfair2)
+interplot(cfair2, var1 = "chood.class", var2 = "black") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "White vs Black",
+       y = "Marginal Effect of Childhood Class") +
+  theme_bw()
+interplot(cfair2, var1 = "black", var2 = "chood.class") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "Childhood Class",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+cfair3 <- lm(court.fair.race ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(cfair3)
+interplot(cfair3, var1 = "chood.class", var2 = "black") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "White vs Black",
+       y = "Marginal Effect of Childhood Class") +
+  theme_bw()
+interplot(cfair3, var1 = "black", var2 = "chood.class") +
+  labs(title = "Racial Differences by Childhood Class",
+       x = "Childhood Class",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+####Current income
+When operationalizing class fragility with current income, income shapes views, but prompt matters for how its influence maps. In the neutral prompt, both higher income whites and blacks view the courts more positively. When incorporating class into the prompt, higher income whites view the courts more positively, increasing the gap between blacks and whites in their fairness evaluations. A similar effect holds for the race prompt, but the effects are smaller.
+**''fairly apply the law?''**
+```{r, echo = F}
+cfair1 <- lm(court.fair ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(cfair1)
+interplot(cfair1, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(cfair1, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's class?''**
+```{r, echo = F}
+cfair2 <- lm(court.fair.class ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(cfair2)
+interplot(cfair2, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(cfair2, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+**''fairly apply the law, regardless of a person's race?''**
+```{r, echo = F}
+cfair3 <- lm(court.fair.race ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(cfair3)
+interplot(cfair3, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(cfair3, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
 ##Police Respect
 ###Social Experiences
 ####Police Abused Friends/Family
