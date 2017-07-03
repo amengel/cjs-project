@@ -1742,6 +1742,145 @@ interplot(respol.1, var1 = "black", var2 = "inc") +
 
 ##Police Quality "Bad Apples"
 ###Social Experiences
+####Police Abused Friends/Family
+Police mistreatment shapes explanations for police negligence and corruption. This effect matters more for whites than blacks, with whites having a peer being mistreated by the police being less likely to endorse a "bad apples" perspective.
+```{r, echo = F}
+respol.1 <- lm(pol.badapples ~ pol.mistreat*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+interplot(respol.1, var1 = "pol.mistreat", var2 = "black") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "White vs Black",
+       y = "Marginal Effect of Experiencing Police Mistreatment") +
+  theme_bw()
+interplot(respol.1, var1 = "black", var2 = "pol.mistreat") +
+  labs(title = "Racial Differences by Police Mistreatment Experience",
+       x = "Level of Mistreatment by the Police",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+####Peers convicted of a Felony
+Having peers with felony convictions similarly shapes attitudes. More peers moves individuals to endorse at least a mixed view of the causes of police negligence. Again, the effect is larger for whites than blacks, and the gap between blacks and whites in their attitudes grows smaller as the number of peers increses. 
+```{r, echo = F}
+respol.1 <- lm(pol.badapples ~ peer.felony*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+interplot(respol.1, var1 = "peer.felony", var2 = "black") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "White vs Black",
+       y = "Marginal Effect of Peer Felony Conviction") +
+  theme_bw()
+interplot(respol.1, var1 = "black", var2 = "peer.felony") +
+  labs(title = "Racial Differences by Peer Felony Conviction",
+       x = "Peers with Felony Convictions",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
 ###Employment
+####Employed in the Government
+Employment in the government shapes views on police negligence, but mostly for whites. Whites employed in the government are less likely to endorse a "bad apples" perspective. The gap between whites and blacks employed in government is smaller than those not employed in government.
+```{r, echo = F}
+respol.1 <- lm(pol.badapples ~ employ.gov*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+interplot(respol.1, var1 = "employ.gov", var2 = "black") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of Government Employment") +
+  theme_bw()
+interplot(respol.1, var1 = "black", var2 = "employ.gov") +
+  labs(title = "Racial Differences by Government Employment",
+       x = "Government Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+####Employed in the Criminal Justice System
+Less varies by whether or not the respondent is employed in the criminal justice system. CJS employment does not appear to meaningfully differentiate whites or blacks with respect to their attitudes.
+```{r, echo = F}
+respol.1 <- lm(pol.badapples ~ employ.cjs*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+interplot(respol.1, var1 = "employ.cjs", var2 = "black") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "White vs Black",
+       y = "Marginal Effect of CJS Employment") +
+  theme_bw()
+interplot(respol.1, var1 = "black", var2 = "employ.cjs") +
+  labs(title = "Racial Differences by CJS Employment",
+       x = "CJS Employment Status",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
+
+####Criminal Justice System Profession
+Finally, little seems to systematically vary by position within the criminal justice system.
+```{r, echo = F}
+respol.1 <- lm(pol.badapples ~ as.factor(cjs.pos)*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+# interplot(respol.1, var1 = "as.factor(cjs.pos)8", var2 = "black") +
+#   labs(title = "Racial Differences by CJS Job",
+#        x = "White vs Black",
+#        y = "Marginal Effect of having a CJS Job: ") +
+#   theme_bw()
+# interplot(respol.1, var1 = "black", var2 = "cjs.pos") +
+#   labs(title = "Racial Differences by CJS Job",
+#        x = "CJS Job Status",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+
 ###Racial Group Views
+####Racial Resentment
+Whites' racial attitudes motivate them to view police negligence as incidents of bad apples. The gap between the least and most racially resentful is roughly a full category.
+```{r, echo = F}
+respol.1 <- lm(pol.badapples ~ rr_sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(respol.1)
+```
+####White Linked Fate
+Whites' linked fate motivates them to view police negligence as less about bad apples. Higher levels of linked fate relate to a more systemic perspective.
+```{r, echo = F}
+respol.1 <- lm(pol.badapples ~ wht.lfate.sc, data = cjs.df, weights = wts_white,
+               subset = black == 0)
+summary(respol.1)
+```
+####Black Linked Fate
+Blacks' linked fate functions similarly to whites. Higher levels of linked fate motivate endorse a more systematic reason for police negligence. Moreover, the effect is larger for blacks than whites. 
+```{r, echo = F}
+respol.1 <- lm(pol.badapples ~ blk.lfate.sc, data = cjs.df, weights = wts_black,
+               subset = black == 1)
+summary(respol.1)
+```
 ###Class Fragility
+####Family class growing up
+Individuals' class background motivates their views as well, but the effect doesn't vary by race. Individuals from higher class backgrounds, regardless of race, are less likely to endorse a "bad apples" view.
+```{r, echo = F}
+respol.1 <- lm(pol.badapples ~ chood.class*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+# interplot(respol.1, var1 = "chood.class", var2 = "black") +
+#   labs(title = "Racial Differences by Childhood Class",
+#        x = "White vs Black",
+#        y = "Marginal Effect of Childhood Class") +
+#   theme_bw()
+# interplot(respol.1, var1 = "black", var2 = "chood.class") +
+#   labs(title = "Racial Differences by Childhood Class",
+#        x = "Income Level",
+#        y = "Black-White Evaluation Difference") +
+#   theme_bw()
+```
+
+####Current income
+A similar story holds for income, but the effects also vary by race. Higher income whites are less likely do endorse a systemic explanation for police ngeligence. The opposite is true for blacks. Consequently, the differ between blacks and whites increases as income increases.
+```{r, echo = F}
+respol.1 <- lm(pol.badapples ~ inc*black, data = cjs.df, weights = wts_whole)
+summary(respol.1)
+interplot(respol.1, var1 = "inc", var2 = "black") +
+  labs(title = "Racial Differences by Income Level",
+       x = "White vs Black",
+       y = "Marginal Effect of Income Level") +
+  theme_bw()
+interplot(respol.1, var1 = "black", var2 = "inc") +
+  labs(title = "Racial Differences by Income Level",
+       x = "Income Level",
+       y = "Black-White Evaluation Difference") +
+  theme_bw()
+```
