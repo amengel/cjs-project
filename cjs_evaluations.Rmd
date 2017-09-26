@@ -1,0 +1,151 @@
+---
+title: "CJS Evaluations"
+author: Drew Engelhardt
+#date: March 22, 2005
+output: pdf_document
+---
+
+```{r, include = F}
+source("~/Documents/git/cjs project/cjs_cleaning.R")
+library(psy)
+library(broman)
+library(interplot)
+```
+
+```{r, echo = F}
+csolve.c <- lm(p.crim.solve ~ black*class, data = cjs.df, weights = wts_whole)
+csolve.c3 <- lm(p.crim.solve ~ black*class3, data = cjs.df, weights = wts_whole)
+interplot(csolve.c, var1 = "black", var2 = "class") +
+  labs(title = "Police Solving Crime",
+       subtitle =  "Class Differences by Race",
+       x = "Class",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+interplot(csolve.c3, var1 = "black", var2 = "class3") +
+  labs(title = "Police Solving Crime",
+       subtitle =  "Class Differences by Race",
+       x = "Class, Tripartite",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+```
+
+```{r, echo = F}
+csolve.c <- lm(p.viol.crim ~ black*class, data = cjs.df, weights = wts_whole)
+csolve.c3 <- lm(p.viol.crim ~ black*class3, data = cjs.df, weights = wts_whole)
+interplot(csolve.c, var1 = "black", var2 = "class") +
+  labs(title = "Protect From Violent Crime",
+       subtitle =  "Class Differences by Race",
+       x = "Class",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+interplot(csolve.c3, var1 = "black", var2 = "class3") +
+  labs(title = "Protect From Violent Crime",
+       subtitle =  "Class Differences by Race",
+       x = "Class, Tripartite",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+```
+
+```{r, echo = F}
+csolve.c <- lm(p.race.fair ~ black*class, data = cjs.df, weights = wts_whole)
+csolve.c3 <- lm(p.race.fair ~ black*class3, data = cjs.df, weights = wts_whole)
+interplot(csolve.c, var1 = "black", var2 = "class") +
+  labs(title = "Treat racial and ethnic groups equally",
+       subtitle =  "Class Differences by Race",
+       x = "Class",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+interplot(csolve.c3, var1 = "black", var2 = "class3") +
+  labs(title = "Treat racial and ethnic groups equally",
+       subtitle =  "Class Differences by Race",
+       x = "Class, Tripartite",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+```
+
+```{r, echo = F}
+csolve.c <- lm(p.exces.force ~ black*class, data = cjs.df, weights = wts_whole)
+csolve.c3 <- lm(p.exces.force ~ black*class3, data = cjs.df, weights = wts_whole)
+interplot(csolve.c, var1 = "black", var2 = "class") +
+  labs(title = "Not use Excessive Force",
+       subtitle =  "Class Differences by Race",
+       x = "Class",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+interplot(csolve.c3, var1 = "black", var2 = "class3") +
+  labs(title = "Not use Excessive Force",
+       subtitle =  "Class Differences by Race",
+       x = "Class, Tripartite",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+```
+
+```{r, echo = F}
+csolve.c <- lm(p.account ~ black*class, data = cjs.df, weights = wts_whole)
+csolve.c3 <- lm(p.account ~ black*class3, data = cjs.df, weights = wts_whole)
+interplot(csolve.c, var1 = "black", var2 = "class") +
+  labs(title = "Holding Officers Accountable",
+       subtitle =  "Class Differences by Race",
+       x = "Class",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+interplot(csolve.c3, var1 = "black", var2 = "class3") +
+  labs(title = "Holding Officers Accountable",
+       subtitle =  "Class Differences by Race",
+       x = "Class, Tripartite",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+```
+
+```{r, echo = F}
+csolve.c <- lm(police.rate.sc ~ black*class, data = cjs.df, weights = wts_whole)
+csolve.c3 <- lm(police.rate.sc ~ black*class3, data = cjs.df, weights = wts_whole)
+interplot(csolve.c, var1 = "black", var2 = "class") +
+  labs(title = "Overall Police Ratings",
+       subtitle =  "Class Differences by Race",
+       x = "Class",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+interplot(csolve.c3, var1 = "black", var2 = "class3") +
+  labs(title = "Overall Police Ratings",
+       subtitle =  "Class Differences by Race",
+       x = "Class, Tripartite",
+       y = "Marginal Effect of Black") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"))
+```
