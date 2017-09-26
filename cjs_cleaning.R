@@ -72,6 +72,10 @@ cjs.df$educ3.rac[which(cjs.df$edu >= 4 & cjs.df$black == 1)] <- 3
 
 cjs.df$class <- NA
 cjs.df$class <- (cjs.df$inc3 + cjs.df$educ3 - 2)/4
+cjs.df$class3 <- NA
+cjs.df$class3[which(cjs.df$educ3 == 1 & cjs.df$inc3 == 1)] <- 1
+cjs.df$class3[which(cjs.df$educ3 == 2 & cjs.df$inc3 == 2)] <- 2
+cjs.df$class3[which(cjs.df$educ3 == 3 & cjs.df$inc3 == 3)] <- 3
 cjs.df$class.rac <- NA
 cjs.df$class.rac <- (cjs.df$inc3.rac + cjs.df$educ3.rac - 2)/4
 # chisq.test(prop.table(svytable(~class + black, d.all), 2))
@@ -144,12 +148,12 @@ cjs.df$pid3[which(cjs.df$pid7 > 3)] <- 1
 # Recoding outcomes
 #----------------------------------------------------------------------------------------------------#
 # p.crim.solve, p.viol.crim, p.race.fair, p.exces.force, p.account, police.rate.sc
-# Police Ratings
-cjs.df$p.crim.solve <- cjs.df$A005_1
-cjs.df$p.viol.crim <- cjs.df$A005_2
-cjs.df$p.race.fair <- cjs.df$A005_3
-cjs.df$p.exces.force <- cjs.df$A005_4
-cjs.df$p.account <- cjs.df$A005_5
+# Police Ratings (excellent - poor)
+cjs.df$p.crim.solve <- abs(cjs.df$A005_1 - 4)/4
+cjs.df$p.viol.crim <- abs(cjs.df$A005_2 - 4)/4
+cjs.df$p.race.fair <- abs(cjs.df$A005_3 - 4)/4
+cjs.df$p.exces.force <- abs(cjs.df$A005_4 - 4)/4
+cjs.df$p.account <- abs(cjs.df$A005_5 - 4)/4
 
 cjs.df$police.rate <- NA
 cjs.df$police.rate <- (cjs.df$p.crim.solve + cjs.df$p.viol.crim + cjs.df$p.race.fair + cjs.df$p.exces.force + cjs.df$p.account)/5
@@ -158,18 +162,18 @@ cjs.df$police.rate.sc <- cjs.df$police.rate/4
 # library(psy)
 # cronbach(cbind(cjs.df$p.crim.solve, cjs.df$p.viol.crim, cjs.df$p.race.fair, cjs.df$p.exces.force, cjs.df$p.account))
 
-# Court fairness
+# Court fairness (lots to no confiedene)
 cjs.df$court.fair <- NA
 cjs.df$court.fair[which(cjs.df$A006_r == "law?")] <- cjs.df$A006[which(cjs.df$A006_r == "law?")]
-cjs.df$court.fair <- cjs.df$court.fair/3
+cjs.df$court.fair <- abs(cjs.df$court.fair - 3)/3
 
 cjs.df$court.fair.race <- NA
 cjs.df$court.fair.race[which(cjs.df$A006_r == "law regardless of a person\x89۪s race?")] <- cjs.df$A006[which(cjs.df$A006_r == "law regardless of a person\x89۪s race?")]
-cjs.df$court.fair.race <- cjs.df$court.fair.race/3
+cjs.df$court.fair.race <- abs(cjs.df$court.fair.race - 3)/3
 
 cjs.df$court.fair.class <- NA
 cjs.df$court.fair.class[which(cjs.df$A006_r == "law regardless of a person\x89۪s class?")] <- cjs.df$A006[which(cjs.df$A006_r == "law regardless of a person\x89۪s class?")]
-cjs.df$court.fair.class <- cjs.df$court.fair.class/3
+cjs.df$court.fair.class <- abs(cjs.df$court.fair.class - 3)/3
 
 cjs.df$court.fair.treat <- NA
 cjs.df$court.fair.treat[which(cjs.df$A006_r == "law?")] <- "Control"
