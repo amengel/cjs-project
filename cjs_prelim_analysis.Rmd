@@ -185,13 +185,13 @@ stargazer(m1.1.direct, m10.1.direct, m2.1.direct, m20.1.direct, m3.1.direct, m30
           digits = 3, omit.stat = c("f", "adj.rsq"), 
           model.numbers = F, df = F, header = F
 )
-stargazer(m1.1.direct, m10.1.direct, m2.1.direct, m20.1.direct, m3.1.direct, m30.1.direct, 
+stargazer(m1.3.direct, m10.3.direct, m2.3.direct, m20.3.direct, m3.3.direct, m30.3.direct, 
           title = "Relationship between Direct CJS Experiences and Accountability Evaluations",
           covariate.labels = c("Police Interaction Evaluations",
                                "Prison Time", "Crime Victim",
                                "CJS Employee", "Income", "Education", "Age",
                                "Female"),
-          se = list(m1.1.direct.se, m10.1.direct.se, m2.1.direct.se, m20.1.direct.se, m3.1.direct.se, m30.1.direct.se),
+          se = list(m1.3.direct.se, m10.3.direct.se, m2.3.direct.se, m20.3.direct.se, m3.3.direct.se, m30.3.direct.se),
           dep.var.labels = c("Additive", "Binary", "Median Split"), 
           no.space = T, notes = c("OLS regression results with robust standard errors in parentheses.", "Variables scaled 0-1."), 
           notes.align = "l", intercept.bottom = T, 
