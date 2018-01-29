@@ -1,15 +1,24 @@
 ---
 title: "Preliminary Analyses"
-#author: Drew Engelhardt
+author: Drew Engelhardt
 #date: March 22, 2005
-output: html_document
+output: pdf_document
 ---
+
 ```{r, include = F}
 source("~/Documents/git/cjs project/cjs_cleaning.R")
 library(psy)
 library(broman)
 library(interplot)
 ```
+#Summary
+The various results presented below show substantial variation by race, but little systematic variation by class. Descriptively, evaluations of the police in 5 separate dimensions, court fairness evaluations regardless of prompt, beliefs that respecting police improve interactions, and perceptions that police corruption is motivated less by bad apples all vary by race. But perhaps more importantly for our position, little variation exists *within* each racial group that seems attributable to class. Only court evaluations appear to have any meaningful variation by class in these cross-tabs.
+
+On the court evaluations question, higher class whites are somewhat more likely to view them as fair in the class condition. In contrast, higher class blacks in both the class and race conditions view the courst as less fair, with a 14 point gap emerging between low and high class blacks in the class-prime condition.
+
+For me, interesting differences emerge in some of the additional analyses. On the court fairness questionwording test, priming race leads to a polarization in beliefs by race. Blacks view the courts as less fair relative to the other prompts while whites see them as more fair.
+
+Social connections, racial attitudes, government employment, and employment in the criminal justice system all explain variation in outcomes, too. Class fragility and specific CJS occupation appear to explain little meaningful variation. What varies is which racial group they matter for, on which outcomes, and with what effect. Social connections play an important role for whites, bringing their responses closer in line with blacks. Whites who have more peers with felony convictions evaluate the police at about the same level blacks. Relatedly, blacks employed in the government look more like whites in their responses to many items than do blacks employed elsewhere. Perhaps most interestingly, linked fate, regardless of racial groups, produces more negative views about the criminal justice system. In sharp contrast, racially resentful whites overwhemlingly believe the CJS to be fair and the police in their area to be good. These are all bivariate interactive relationships, but the results to me are suggestive.
 
 #Average Policy Differences By Race and Class
 ##Police Fairness Evaluations
@@ -60,6 +69,7 @@ svyhist(~police.rate.sc, d.blk, main = "Blacks Only",
 ```
 
 It's also potentially instructive to contrast whites and blacks in how these police evaluation items scale together. To get a sense for whether these capture summary evaluations across groups, I present alphas for the 5 items scaled together. Cronbach's alpha for whites is `r myround(cronbach(cbind(w.df$p.crim.solve, w.df$p.viol.crim, w.df$p.race.fair, w.df$p.exces.force, w.df$p.account))$alpha, 2)`, while for black it is `r myround(cronbach(cbind(b.df$p.crim.solve, b.df$p.viol.crim, b.df$p.race.fair, b.df$p.exces.force, b.df$p.account))$alpha, 2)`. Although a rough pass, the similarity suggests that blacks and whites use the same dimensions to evaluate the police. I could push further on this with some factor analyses if interested.
+
 
 Race seems closely related to how people evaluate the police in their area. This manifests both in individual and summary item ratings. Importantly, the dimensions on which whites and blacks evaluate the police seem to matter the same.
 

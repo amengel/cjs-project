@@ -1,0 +1,119 @@
+#---
+#title: "Additional Analyses"
+##author: Drew Engelhardt
+##date: March 22, 2005
+#output: pdf_document
+#---
+#```{r, include = F}
+#source("~/Documents/git/cjs project/cjs_cleaning.R")
+#library(psy)
+#library(broman)
+#library(interplot)
+#```
+#
+#```{r}
+#summary(lm(court.fair.all ~ court.fair.treat*class.rac, cjs.df, weights #= wts_black))
+#```
+
+### Police evaluations
+rates <- lm(police.rate.sc ~ black, 
+            cjs.df, weights = wts_whole)
+summary(rates)
+
+rates.predisp <- lm(police.rate.sc ~ pid7 + lfate 
+                   + black + woman + age, 
+                   cjs.df, weights = wts_whole)
+summary(rates.predisp)
+
+rates.predisp1 <- lm(police.rate.sc ~ pid7*black + lfate*black 
+                    + woman*black + age*black, 
+                    cjs.df, weights = wts_whole)
+summary(rates.predisp1)
+
+rates.demogs <- lm(police.rate.sc ~ class.rac + chood.class 
+                   + black + woman + age, 
+                   cjs.df, weights = wts_whole)
+summary(rates.demogs)
+
+rates.demogs1 <- lm(police.rate.sc ~ class.rac*black + chood.class*black 
+                    + woman*black + age*black, 
+                   cjs.df, weights = wts_whole)
+summary(rates.demogs1)
+
+rates.full <- lm(police.rate.sc ~ pid7 + lfate
+                  + class.rac + chood.class
+                  + black + woman + age, 
+                  cjs.df, weights = wts_whole)
+summary(rates.full)
+
+rates.full1 <- lm(police.rate.sc ~ pid7*black + lfate*black 
+                    + class.rac*black + chood.class*black 
+                    + woman*black + age*black, 
+                    cjs.df, weights = wts_whole)
+summary(rates.full1)
+
+# peer.felony, pol.mistreat
+#employ.gov, employ.gov
+#crime.worry, polviol.worry
+
+
+rates.fuller1 <- lm(police.rate.sc ~ pid7*black + lfate*black 
+                  + polviol.worry*black + crime.worry*black
+                  + class.rac*black + chood.class*black 
+                  + woman*black + age*black, 
+                  cjs.df, weights = wts_whole)
+summary(rates.fuller1)
+
+## Whites
+rates.wht <- lm(police.rate.sc ~ pid7 + rr_sc, 
+            cjs.df, weights = wts_whole)
+summary(rates.wht)
+
+rates.wht.ids <- lm(police.rate.sc ~ pid7 + rr_sc + lfate, 
+                       cjs.df, weights = wts_white)
+summary(rates.wht.ids)
+
+rates.wht.demogs <- lm(police.rate.sc ~ class.rac + chood.class 
+                       + woman + age, 
+                       cjs.df, weights = wts_white)
+summary(rates.wht.demogs)
+
+rates.wht.full <- lm(police.rate.sc ~ pid7 + rr_sc + lfate
+                     + class.rac + chood.class
+                     + woman + age, 
+                       cjs.df, weights = wts_white)
+summary(rates.wht.full)
+
+
+### Court Fairness: 
+# court.fair.all(responses)  court.fair.treat (treatment dummy)
+cfair <- lm(court.fair.all ~ court.fair.treat*black, 
+            cjs.df, weights = wts_whole)
+summary(cfair)
+
+cfair.wht <- lm(court.fair.all ~ court.fair.treat*rr_sc 
+            + pid7, 
+            cjs.df, weights = wts_white)
+summary(cfair.wht)
+
+
+## interplot extraction for expected values across treatments?
+# interplot(csolve.1, var1 = "black", var2 = "pol.mistreat") +
+# labs(title = "Racial Differences by Police Mistreatment Experience",
+#      x = "Level of Mistreatment by the Police",
+#      y = "Black-White Evaluation Difference") +
+#   theme_bw()
+
+### Police Violence and Respect
+# respect.police
+respect.fuller1 <- lm(respect.police ~ lfate*black 
+                    + polviol.worry*black + crime.worry*black
+                    + class.rac*black + chood.class*black 
+                    + woman*black + age*black, 
+                    cjs.df, weights = wts_whole)
+summary(respect.fuller1)
+
+### Police Negligence/Corruption bad apples
+# pol.badapples
+
+

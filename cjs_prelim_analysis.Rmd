@@ -1,0 +1,319 @@
+---
+title: "Preliminary Analyses"
+author: Drew Engelhardt
+#date: March 22, 2005
+output: pdf_document
+---
+  
+```{r, include = F}
+source("~/Documents/git/cjs project/cjs_cleaning.R")
+library(interplot)
+library(psych)
+library(broman)
+library(lavaan)
+library(stargazer)
+library(sandwich)
+library(car)
+```
+#Models
+```{r, include = F}
+# LF
+m1.lf <- lm(police.account.sc ~ lfate,
+            data = cjs.df, weights = wts_black)
+m1.lf.se <- sqrt(diag(vcovHC(m1.lf, "HC3")))
+m2.lf <- lm(police.account.bin.sc ~ lfate,
+            data = cjs.df, weights = wts_black)
+m2.lf.se <- sqrt(diag(vcovHC(m2.lf, "HC3")))
+m3.lf <- lm(police.account.med.sc ~ lfate,
+            data = cjs.df, weights = wts_black)
+m3.lf.se <- sqrt(diag(vcovHC(m3.lf, "HC3")))
+
+
+m10.lf <- lm(police.account.sc ~ lfate + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m10.lf.se <- sqrt(diag(vcovHC(m10.lf, "HC3")))
+m20.lf <- lm(police.account.bin.sc ~ lfate + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m20.lf.se <- sqrt(diag(vcovHC(m20.lf, "HC3")))
+m30.lf <- lm(police.account.med.sc ~ lfate + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m30.lf.se <- sqrt(diag(vcovHC(m30.lf, "HC3")))
+
+#linearHypothesis(m30.lf, c("lfate = employ.cjs"), white.adjust = "hc3")
+
+# Direct (IV operationalizations look the same substantively for stops. Police experience ratings strong association)
+m1.1.direct <- lm(police.account.sc ~ stop.poor,
+            data = cjs.df, weights = wts_black)
+m1.1.direct.se <- sqrt(diag(vcovHC(m1.1.direct, "HC3")))
+m1.2.direct <- lm(police.account.sc ~ stop.poor2,
+            data = cjs.df, weights = wts_black)
+m1.2.direct.se <- sqrt(diag(vcovHC(m1.2.direct, "HC3")))
+m1.3.direct <- lm(police.account.sc ~ pol.experience,
+            data = cjs.df, weights = wts_black)
+m1.3.direct.se <- sqrt(diag(vcovHC(m1.3.direct, "HC3")))
+m2.1.direct <- lm(police.account.bin.sc ~ stop.poor,
+            data = cjs.df, weights = wts_black)
+m2.1.direct.se <- sqrt(diag(vcovHC(m2.1.direct, "HC3")))
+m2.2.direct <- lm(police.account.bin.sc ~ stop.poor2,
+            data = cjs.df, weights = wts_black)
+m2.2.direct.se <- sqrt(diag(vcovHC(m2.2.direct, "HC3")))
+m2.3.direct <- lm(police.account.bin.sc ~ pol.experience,
+            data = cjs.df, weights = wts_black)
+m2.3.direct.se <- sqrt(diag(vcovHC(m2.3.direct, "HC3")))
+m3.1.direct <- lm(police.account.med.sc ~ stop.poor,
+            data = cjs.df, weights = wts_black)
+m3.1.direct.se <- sqrt(diag(vcovHC(m3.1.direct, "HC3")))
+m3.2.direct <- lm(police.account.med.sc ~ stop.poor2,
+            data = cjs.df, weights = wts_black)
+m3.2.direct.se <- sqrt(diag(vcovHC(m3.2.direct, "HC3")))
+m3.3.direct <- lm(police.account.med.sc ~ pol.experience,
+            data = cjs.df, weights = wts_black)
+m3.3.direct.se <- sqrt(diag(vcovHC(m3.3.direct, "HC3")))
+
+
+m10.1.direct <- lm(police.account.sc ~ stop.poor + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m10.1.direct.se <- sqrt(diag(vcovHC(m10.1.direct, "HC3")))
+m10.2.direct <- lm(police.account.sc ~ stop.poor2 + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m10.2.direct.se <- sqrt(diag(vcovHC(m10.2.direct, "HC3")))
+m10.3.direct <- lm(police.account.sc ~ pol.experience + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m10.3.direct.se <- sqrt(diag(vcovHC(m10.3.direct, "HC3")))
+m20.1.direct <- lm(police.account.bin.sc ~ stop.poor + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m20.1.direct.se <- sqrt(diag(vcovHC(m20.1.direct, "HC3")))
+m20.2.direct <- lm(police.account.bin.sc ~ stop.poor2 + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m20.2.direct.se <- sqrt(diag(vcovHC(m20.2.direct, "HC3")))
+m20.3.direct <- lm(police.account.bin.sc ~ pol.experience + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m20.3.direct.se <- sqrt(diag(vcovHC(m20.3.direct, "HC3")))
+m30.1.direct <- lm(police.account.med.sc ~ stop.poor + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m30.1.direct.se <- sqrt(diag(vcovHC(m30.1.direct, "HC3")))
+m30.2.direct <- lm(police.account.med.sc ~ stop.poor2 + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m30.2.direct.se <- sqrt(diag(vcovHC(m30.2.direct, "HC3")))
+m30.3.direct <- lm(police.account.med.sc ~ pol.experience + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m30.3.direct.se <- sqrt(diag(vcovHC(m30.3.direct, "HC3")))
+
+
+# Proximal
+m1.prox <- lm(police.account.sc ~ pol.mistreat + peer.felony,
+            data = cjs.df, weights = wts_black)
+m1.prox.se <- sqrt(diag(vcovHC(m1.prox, "HC3")))
+m2.prox <- lm(police.account.bin.sc ~ pol.mistreat + peer.felony,
+            data = cjs.df, weights = wts_black)
+m2.prox.se <- sqrt(diag(vcovHC(m2.prox, "HC3")))
+m3.prox <- lm(police.account.med.sc ~ pol.mistreat + peer.felony,
+            data = cjs.df, weights = wts_black)
+m3.prox.se <- sqrt(diag(vcovHC(m3.prox, "HC3")))
+
+
+m10.prox <- lm(police.account.sc ~ pol.mistreat + peer.felony + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m10.prox.se <- sqrt(diag(vcovHC(m10.prox, "HC3")))
+m20.prox <- lm(police.account.bin.sc ~ pol.mistreat + peer.felony + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m20.prox.se <- sqrt(diag(vcovHC(m20.prox, "HC3")))
+m30.prox <- lm(police.account.med.sc ~ pol.mistreat + peer.felony + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m30.prox.se <- sqrt(diag(vcovHC(m30.prox, "HC3")))
+
+
+# Combined
+m1.comb <- lm(police.account.sc ~ lfate + stop.poor + pol.mistreat + peer.felony,
+            data = cjs.df, weights = wts_black)
+m1.comb.se <- sqrt(diag(vcovHC(m1.comb, "HC3")))
+m2.comb <- lm(police.account.bin.sc ~ lfate + stop.poor + pol.mistreat + peer.felony,
+            data = cjs.df, weights = wts_black)
+m2.comb.se <- sqrt(diag(vcovHC(m2.comb, "HC3")))
+m3.comb <- lm(police.account.med.sc ~ lfate + stop.poor + pol.mistreat + peer.felony,
+            data = cjs.df, weights = wts_black)
+m3.comb.se <- sqrt(diag(vcovHC(m3.comb, "HC3")))
+
+
+m10.comb <- lm(police.account.sc ~ lfate + stop.poor + pol.mistreat + peer.felony + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m10.comb.se <- sqrt(diag(vcovHC(m10.comb, "HC3")))
+# linearHypothesis(m10.comb, c("lfate = pol.mistreat"), white.adjust = "hc3")
+
+m20.comb <- lm(police.account.bin.sc ~ lfate + stop.poor + pol.mistreat + peer.felony + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m20.comb.se <- sqrt(diag(vcovHC(m20.comb, "HC3")))
+# linearHypothesis(m20.comb, c("lfate = pol.mistreat"), white.adjust = "hc3")
+
+m30.comb <- lm(police.account.med.sc ~ lfate + stop.poor + pol.mistreat + peer.felony + prison.time + crim.vict + employ.cjs + inc + educ3 + age + woman,
+            data = cjs.df, weights = wts_black)
+m30.comb.se <- sqrt(diag(vcovHC(m30.comb, "HC3")))
+# linearHypothesis(m30.comb, c("lfate = pol.mistreat"), white.adjust = "hc3")
+```
+Table 1 presents results relating linked fate to criminal justice system accountability evaluations. This outcome is operationalized three ways, per the workflow suggestion: an additive index, a summed outcome where the items are collapsed to "poor" vs all other evaluations, and a median split for "bad" or not. I provide two models, a simple binary relationship and a specification incorporating covariates, to provide insight into how the covariate adjustment shifts the correlation. All variables are scaled 0-1. Across all DV specifications more linked fate increases the degree to which blacks report more negative evaluations of police accountability. The min-max difference is on the order of 10-15 percentage points depending on outcome operationalization. Substantively this difference seems substantial beacuse this change implicates 62% of survey respondents.
+```{r, echo=F, results='asis'}
+stargazer(m1.lf, m10.lf, m2.lf, m20.lf, m3.lf, m30.lf,
+          title = "Relationship between Linked Fate and Accountability Evaluations",
+          covariate.labels = c("Linked Fate",
+                               "Prison Time", "Crime Victim",
+                               "CJS Employee", "Income", "Education", "Age",
+                               "Female"),
+          se = list(m1.lf.se, m10.lf.se, m2.lf.se, m20.lf.se, m3.lf.se, m30.lf.se),
+          dep.var.labels = c("Additive", "Binary", "Median Split"), 
+          no.space = T, notes = c("OLS regression results with robust standard errors in parentheses.", "Variables scaled 0-1."), 
+          notes.align = "l", intercept.bottom = T, 
+          type = "latex", header = F,
+          digits = 3, omit.stat = c("f", "adj.rsq"), 
+          model.numbers = F, df = F
+)
+```
+Some of the covariates work in expected ways, helping validate the outcome. Respondents who have spent time in prison hold more negative views of the criminal justice system. But those employed in some capacity by the criminal justice system hold more positive views. This latter effect surpasses that of linked fate, and they are in fact statistically distinguishable ($p < 0.01$). Even so, because only 4% of respondents report working in the criminal justice sysetm this seems a small substantive difference. At least here, linked fate matters most substantively
+
+In table 2 I report the results from analyses using the direct CJS experience items. Both operationalizations for the police stop experiences retained similar coefficient estimates, so I report the first operationalization for simiplicty (1 = stops are perceived as unfair and dangerous, 0.5 = mix, 0 = neither). I also include the police evaluations item for which 90% of respondents offer answers. This explains in part the case loss between models. The results reveal that direct contact shapes perceptions of police accountability and fairness. More negative contact is associate with more negative evaluations, and this holds after including covariates. Those stopped and perceiving the stop to be unfair and/or dangerous are nearly 20 percentage points more negative in their evaluations than those who have never been stopped by the police (or asked for help). Substantively this difference seems conseuqential by implicating some 80% of respondents (27% report police stops both dangerous and unfair). Incorporating the police experience evaluations item yields a stronger coefficient estimate (results in Table 3). Among those who have interacted with the police, the difference in fairness evaluations among those rating their experiences mostly postive versus mostly negative is at times nearly 40 percentage points. This and the police experiences item are correlated at `r myround(cor(cbind(cjs.df$pol.experience[which(cjs.df$black == 1)], cjs.df$stop.poor[which(cjs.df$black == 1)]), use = "complete.obs")[1,2], 2)`.
+```{r, echo = F, results='asis'}
+stargazer(m1.1.direct, m10.1.direct, m2.1.direct, m20.1.direct, m3.1.direct, m30.1.direct, 
+          title = "Relationship between Direct CJS Experiences and Accountability Evaluations",
+          covariate.labels = c("Police Stop Experiences",
+                               "Prison Time", "Crime Victim",
+                               "CJS Employee", "Income", "Education", "Age",
+                               "Female"),
+          se = list(m1.1.direct.se, m10.1.direct.se, m2.1.direct.se, m20.1.direct.se, m3.1.direct.se, m30.1.direct.se),
+          dep.var.labels = c("Additive", "Binary", "Median Split"), 
+          no.space = T, notes = c("OLS regression results with robust standard errors in parentheses.", "Variables scaled 0-1."), 
+          notes.align = "l", intercept.bottom = T, 
+          type = "latex",
+          digits = 3, omit.stat = c("f", "adj.rsq"), 
+          model.numbers = F, df = F, header = F
+)
+stargazer(m1.1.direct, m10.1.direct, m2.1.direct, m20.1.direct, m3.1.direct, m30.1.direct, 
+          title = "Relationship between Direct CJS Experiences and Accountability Evaluations",
+          covariate.labels = c("Police Interaction Evaluations",
+                               "Prison Time", "Crime Victim",
+                               "CJS Employee", "Income", "Education", "Age",
+                               "Female"),
+          se = list(m1.1.direct.se, m10.1.direct.se, m2.1.direct.se, m20.1.direct.se, m3.1.direct.se, m30.1.direct.se),
+          dep.var.labels = c("Additive", "Binary", "Median Split"), 
+          no.space = T, notes = c("OLS regression results with robust standard errors in parentheses.", "Variables scaled 0-1."), 
+          notes.align = "l", intercept.bottom = T, 
+          type = "latex",
+          digits = 3, omit.stat = c("f", "adj.rsq"), 
+          model.numbers = F, df = F, header = F
+)
+```
+Table 4 focuses on proximate experiences, including peer police mistreatment and felony convictions together as predictors. Each has a positive association with police accountability evaluations such that the more peers one has who have wither been mistreated by the police or convicted of a felony, the more negative their judgments of the police. But mistreatment matters much more than felony convictions, and roughly four times as much. People with 5 or more close friends and family who have been mistreated by the police are 17-24 percentage points more negative in their evaluations than those with nobody mistreated (12% vs 57% of the sample). 
+```{r, echo=F, results='asis'}
+stargazer(m1.prox, m10.prox, m2.prox, m20.prox, m3.prox, m30.prox, 
+          title = "Relationship between Proximate CJS Experiences and Accountability Evaluations",
+          covariate.labels = c("Peer Police Mistreatment", "Peer Felony Convictions",
+                               "Prison Time", "Crime Victim",
+                               "CJS Employee", "Income", "Education", "Age",
+                               "Female"),
+          se = list(m1.prox.se, m10.prox.se, m2.prox.se, m20.prox.se, m3.prox.se, m30.prox.se),
+          dep.var.labels = c("Additive", "Binary", "Median Split"), 
+          no.space = T, notes = c("OLS regression results with robust standard errors in parentheses.", "Variables scaled 0-1."), 
+          notes.align = "l", intercept.bottom = T, 
+          type = "latex",
+          digits = 3, omit.stat = c("f", "adj.rsq"), 
+          model.numbers = F, df = F, header = F
+)
+```
+Table 5 incorporates all predictors. The results demonstrate that each has a positive and significant influence on shaping accountability evaluations, although magnitudes vary slightly. Moreover, these results persist after including covariates. The largest differences in judgments come between those with no peers experiencing police mistreatment and those with 5 or more. Peers with felony convictions seem important, but much less so relative to mistreatment. In the middle are linked fate and evaluations of police interactions. Differences here are on the order of 10-12 percentage points.
+```{r, echo=F, results='asis'}
+stargazer(m1.comb, m10.comb, m2.comb, m20.comb, m3.comb, m30.comb, 
+          title = "Omnibus Accountability Evaluations Relationships",
+          covariate.labels = c("Linked Fate", "Police Stop Experiences",
+                               "Peer Police Mistreatment", "Peer Felony Convictions",
+                               "Prison Time", "Crime Victim",
+                               "CJS Employee", "Income", "Education", "Age",
+                               "Female"),
+          se = list(m1.comb.se, m10.comb.se, m2.comb.se, m20.comb.se, m3.comb.se, m30.comb.se),
+          dep.var.labels = c("Additive", "Binary", "Median Split"), 
+          no.space = T, notes = c("OLS regression results with robust standard errors in parentheses.", "Variables scaled 0-1."), 
+          notes.align = "l", intercept.bottom = T, 
+          type = "latex",
+          digits = 3, omit.stat = c("f", "adj.rsq"), 
+          model.numbers = F, df = F, header = F
+)
+```
+
+
+#Appendix
+##Scale Analysis for CJS Perception Items
+```{r, include = F}
+x.all <- subset(cjs.df, 
+            select = c("p.crim.solve", "p.viol.crim", "p.race.fair", "p.exces.force", "p.account"))
+x.wht <- subset(cjs.df, 
+                black == 0,
+            select = c("p.crim.solve", "p.viol.crim", "p.race.fair", "p.exces.force", "p.account"))
+x.blk <- subset(cjs.df,
+                black == 1,
+            select = c("p.crim.solve", "p.viol.crim", "p.race.fair", "p.exces.force", "p.account"))
+```
+Analyses of the CJS perception items suggest they scale well, but we may be better off using a subset of the five. Initial assessments of scale reliability suggest a highly reliable 5-item scale. Cronbach's $\alpha$ for the full sample is `r myround(alpha(x.all)$total$raw_alpha, 2)`, for whites only is `r myround(alpha(x.wht)$total$raw_alpha, 2)`, and for blacks is `r myround(alpha(x.blk)$total$raw_alpha, 2)`.
+
+
+Yet, considering the factor structure we get a better fit for a two factor solution. This comes from both exploratory or confirmatory factor analyses. Hypothesizing that the three items addressing police accountability in different areas cohere together, while evaluations of effective policing practices fit a different dimension, improves model fit relative to hypothesizing a single dimension. Although double testing the data, an EFA approach offers a similar solution. Moreover, this outcome holds for the full sample, whites, and blacks. As a result, I propose using the 3 items on accountability to best capture evaluations of the criminal justice system.
+
+<!-- 
+```{r, include = F}
+fa(x.all, fm = "mle", nfactors = 1)
+fa(x.all, fm = "mle", nfactors = 2, rotate = "oblimin")
+
+fa(x.wht, fm = "mle", nfactors = 1)
+fa(x.wht, fm = "mle", nfactors = 2, rotate = "oblimin")
+
+fa(x.blk, fm = "mle", nfactors = 1)
+fa(x.blk, fm = "mle", nfactors = 2, rotate = "oblimin")
+```
+
+
+```{r, include = F}
+w.df <- subset(cjs.df, black == 0)
+b.df <- subset(cjs.df, black == 1)
+
+m1 <- '# latent variable definitions
+factor_1 =~ NA*p.crim.solve + p.viol.crim + p.race.fair + p.exces.force + p.account
+factor_1 ~~ 1*factor_1
+'
+m2 <- '# latent variable definitions
+factor_1 =~ NA*p.crim.solve + p.viol.crim
+factor_2 =~ NA*p.race.fair + p.exces.force + p.account
+factor_1 ~~ 1*factor_1
+factor_2 ~~ 1*factor_2
+'
+
+fit1.a <- cfa(m1, data=cjs.df, mimic = "Mplus")
+summary(fit1.a, fit.measures = T, standardized = T)
+fit2.a <- cfa(m2, data=cjs.df, mimic = "Mplus")
+summary(fit2.a, fit.measures = T, standardized = T)
+
+fit1.w <- cfa(m1, data=w.df, mimic = "Mplus")
+summary(fit1.w, fit.measures = T, standardized = T)
+fit2.w <- cfa(m2, data=w.df, mimic = "Mplus")
+summary(fit2.w, fit.measures = T, standardized = T)
+
+fit1.b <- cfa(m1, data=b.df, mimic = "Mplus")
+summary(fit1.b, fit.measures = T, standardized = T)
+fit2.b <- cfa(m2, data=b.df, mimic = "Mplus")
+summary(fit2.b, fit.measures = T, standardized = T)
+```
+A single factor solution for the full sample lacks good fit properties (CFI = `r myround(fitMeasures(fit1.a)[["cfi"]], 3)`, TLI = `r myround(fitMeasures(fit1.a)[["tli"]], 3)`, RMSEA = `r myround(fitMeasures(fit1.a)[["rmsea"]], 3)` [90% CI: `r myround(fitMeasures(fit1.a)[["rmsea.ci.lower"]], 3)`, `r myround(fitMeasures(fit1.a)[["rmsea.ci.upper"]], 3)`]). These improve substantially when specifying a two factor solution --->
+
+##Scale Construction for Perception
+As the histograms below indicate, the modal black respondent rates the police in their area pooly on each item.
+
+```{r, echo = F, fig.height = 6, fig.width = 4, fig.align = "center"}
+par(mfrow=c(3,1))
+svyhist(~p.race.fair, d.blk, probability = F)
+svyhist(~p.exces.force, d.blk, probability = F)
+svyhist(~p.account, d.blk, probability = F)
+```
+
+Given the non-normality, one proposed recoding is to dummy out those responding poorly vs. everyone else. This option sees between 34 and 43% of respondents coded as "1". Another option employs a median split where those rating the local police "poorly" or "faily" receive a "1". Here, 53-60% of respondents place at the "1". The distributions for the additive, binary, and median split operationalizations are below.
+
+```{r, echo = F, fig.height = 6, fig.width = 4, fig.align = "center"}
+par(mfrow=c(3,1))
+svyhist(~police.account.sc, d.blk, probability = F)
+svyhist(~police.account.bin.sc, d.blk, probability = F)
+svyhist(~police.account.med.sc, d.blk, probability = F)
+```

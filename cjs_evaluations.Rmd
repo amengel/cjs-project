@@ -3,149 +3,851 @@ title: "CJS Evaluations"
 author: Drew Engelhardt
 #date: March 22, 2005
 output: pdf_document
+fig_width: 3 
+fig_height: 2 
 ---
-
 ```{r, include = F}
 source("~/Documents/git/cjs project/cjs_cleaning.R")
 library(psy)
 library(broman)
 library(interplot)
+library(stargazer)
+
+
+### Add to White ID Writeup
+cor(cbind(cjs.df$lfate[which(cjs.df$black == 0)],
+          cjs.df$pid7[which(cjs.df$black == 0)], 
+          cjs.df$ideo[which(cjs.df$black == 0)],
+          cjs.df$class3[which(cjs.df$black == 0)],
+          cjs.df$inc[which(cjs.df$black == 0)], 
+          cjs.df$edu[which(cjs.df$black == 0)],
+          cjs.df$age.sc[which(cjs.df$black == 0)],
+          cjs.df$rr_sc[which(cjs.df$black == 0)]),
+    use = "complete.obs")
+
+cor(cbind(cjs.df$lfate[which(cjs.df$black == 1)],
+          cjs.df$pid7[which(cjs.df$black == 1)], 
+          cjs.df$ideo[which(cjs.df$black == 1)],
+          cjs.df$class3[which(cjs.df$black == 1)],
+          cjs.df$inc[which(cjs.df$black == 1)], 
+          cjs.df$edu[which(cjs.df$black == 1)],
+          cjs.df$age.sc[which(cjs.df$black == 1)],
+          cjs.df$rr_sc[which(cjs.df$black == 1)]),
+    use = "complete.obs")
 ```
+#Part I: Descriptive Relationship between Race, Class, and CJS Evaluations
+As most of the figures below indicate, the racial gap in police evaluations grows as class increases. On all items except the police's capacity to solve crime, higher class blacks hold more negative evaluations of the police than higher class whites. These increases range from about 0.03-0.12 points on outcomes scaled 0-1. Moreover, the patterns hold both from the additive class measure and the tripartite low-low -- high-high class measure.
 
 ```{r, echo = F}
 csolve.c <- lm(p.crim.solve ~ black*class, data = cjs.df, weights = wts_whole)
 csolve.c3 <- lm(p.crim.solve ~ black*class3, data = cjs.df, weights = wts_whole)
-interplot(csolve.c, var1 = "black", var2 = "class") +
-  labs(title = "Police Solving Crime",
-       subtitle =  "Class Differences by Race",
-       x = "Class",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
-interplot(csolve.c3, var1 = "black", var2 = "class3") +
-  labs(title = "Police Solving Crime",
-       subtitle =  "Class Differences by Race",
-       x = "Class, Tripartite",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
+p <- seq(min(cjs.df$class, na.rm = T), 
+         max(cjs.df$class, na.rm = T), 
+         by = .1)
+p3 <- seq(min(cjs.df$class3, na.rm = T), 
+         max(cjs.df$class3, na.rm = T), 
+         by = 1)
+
+testdat.b <- cjs.df[1:length(p), c("black", "class", "p.crim.solve")]
+testdat.w <- testdat.b
+testdat3.b <- cjs.df[1:length(p3), c("black", "class", 
+                                     "p.crim.solve")]
+testdat3.w <- testdat3.b
+
+for(i in 1:length(p)){
+  testdat.b$p.crim.solve[i] <- NA
+  testdat.w$p.crim.solve[i] <- NA
+  testdat.b$black[i] <- 1
+  testdat.w$black[i] <- 0
+  testdat.b$class[i] <- p[i]
+  testdat.w$class[i] <- p[i]
+}
+
+predicted.b <- predict(csolve.c, testdat.b)
+predicted.w <- predict(csolve.c, testdat.w)
+
+for(i in 1:length(p3)){
+  testdat3.b$p.crim.solve[i] <- NA
+  testdat3.w$p.crim.solve[i] <- NA
+  testdat3.b$black[i] <- 1
+  testdat3.w$black[i] <- 0
+  testdat3.b$class3[i] <- p3[i]
+  testdat3.w$class3[i] <- p3[i]
+}
+
+predicted3.b <- predict(csolve.c3, testdat3.b)
+predicted3.w <- predict(csolve.c3, testdat3.w)
+
+par(mfcol = c(1,2))
+plot(p, seq(0, 1, length.out = length(p)), type = "n",
+     main = "Police Solving Crime",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p, predicted.b, col = "navy", lwd = 2)
+lines(p, predicted.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1); axis(2, las = 1)
+plot(p3, seq(0, 1, length.out = length(p3)), type = "n",
+     main = "Police Solving Crime",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p3, predicted3.b, col = "navy", lwd = 2)
+lines(p3, predicted3.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1, at = p3, labels = p3); axis(2, las = 1)
+
+
+#interplot(csolve.c, var1 = "black", var2 = "class") +
+#  labs(title = "Police Solving Crime",
+#       #subtitle =  "Class Differences by Race",
+#       x = "Class",
+#       y = "Marginal Effect of Black") +
+#  theme(panel.grid.major = element_blank(), 
+#        panel.grid.minor = element_blank(),
+#        panel.background = element_blank(), 
+#        axis.line = element_line(colour = "black"))
+#interplot(csolve.c3, var1 = "black", var2 = "class3") +
+#  labs(title = "Police Solving Crime",
+#       #subtitle =  "Class Differences by Race",
+#       x = "Class, Tripartite",
+#       y = "Marginal Effect of Black") +
+#  theme(panel.grid.major = element_blank(), 
+#        panel.grid.minor = element_blank(),
+#        panel.background = element_blank(), 
+#        axis.line = element_line(colour = "black"))
 ```
 
 ```{r, echo = F}
 csolve.c <- lm(p.viol.crim ~ black*class, data = cjs.df, weights = wts_whole)
 csolve.c3 <- lm(p.viol.crim ~ black*class3, data = cjs.df, weights = wts_whole)
-interplot(csolve.c, var1 = "black", var2 = "class") +
-  labs(title = "Protect From Violent Crime",
-       subtitle =  "Class Differences by Race",
-       x = "Class",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
-interplot(csolve.c3, var1 = "black", var2 = "class3") +
-  labs(title = "Protect From Violent Crime",
-       subtitle =  "Class Differences by Race",
-       x = "Class, Tripartite",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
+
+p <- seq(min(cjs.df$class, na.rm = T), 
+         max(cjs.df$class, na.rm = T), 
+         by = .1)
+p3 <- seq(min(cjs.df$class3, na.rm = T), 
+         max(cjs.df$class3, na.rm = T), 
+         by = 1)
+
+testdat.b <- cjs.df[1:length(p), c("black", "class", 
+                                   "p.viol.crim")]
+testdat.w <- testdat.b
+testdat3.b <- cjs.df[1:length(p3), c("black", "class", 
+                                     "p.viol.crim")]
+testdat3.w <- testdat3.b
+
+for(i in 1:length(p)){
+  testdat.b$p.viol.crim[i] <- NA
+  testdat.w$p.viol.crim[i] <- NA
+  testdat.b$black[i] <- 1
+  testdat.w$black[i] <- 0
+  testdat.b$class[i] <- p[i]
+  testdat.w$class[i] <- p[i]
+}
+
+predicted.b <- predict(csolve.c, testdat.b)
+predicted.w <- predict(csolve.c, testdat.w)
+
+for(i in 1:length(p3)){
+  testdat3.b$p.viol.crim[i] <- NA
+  testdat3.w$p.viol.crim[i] <- NA
+  testdat3.b$black[i] <- 1
+  testdat3.w$black[i] <- 0
+  testdat3.b$class3[i] <- p3[i]
+  testdat3.w$class3[i] <- p3[i]
+}
+
+predicted3.b <- predict(csolve.c3, testdat3.b)
+predicted3.w <- predict(csolve.c3, testdat3.w)
+
+par(mfcol = c(1,2))
+plot(p, seq(0, 1, length.out = length(p)), type = "n",
+     main = "Protect From Violent Crime",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p, predicted.b, col = "navy", lwd = 2)
+lines(p, predicted.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1); axis(2, las = 1)
+
+plot(p3, seq(0, 1, length.out = length(p3)), type = "n",
+     main = "Protect From Violent Crime",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p3, predicted3.b, col = "navy", lwd = 2)
+lines(p3, predicted3.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1, at = p3, labels = p3); axis(2, las = 1)
+
+# interplot(csolve.c, var1 = "black", var2 = "class") +
+#   labs(title = "Protect From Violent Crime",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
+# interplot(csolve.c3, var1 = "black", var2 = "class3") +
+#   labs(title = "Protect From Violent Crime",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class, Tripartite",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
 ```
 
 ```{r, echo = F}
 csolve.c <- lm(p.race.fair ~ black*class, data = cjs.df, weights = wts_whole)
 csolve.c3 <- lm(p.race.fair ~ black*class3, data = cjs.df, weights = wts_whole)
-interplot(csolve.c, var1 = "black", var2 = "class") +
-  labs(title = "Treat racial and ethnic groups equally",
-       subtitle =  "Class Differences by Race",
-       x = "Class",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
-interplot(csolve.c3, var1 = "black", var2 = "class3") +
-  labs(title = "Treat racial and ethnic groups equally",
-       subtitle =  "Class Differences by Race",
-       x = "Class, Tripartite",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
+p <- seq(min(cjs.df$class, na.rm = T), 
+         max(cjs.df$class, na.rm = T), 
+         by = .1)
+p3 <- seq(min(cjs.df$class3, na.rm = T), 
+         max(cjs.df$class3, na.rm = T), 
+         by = 1)
+
+testdat.b <- cjs.df[1:length(p), c("black", "class", 
+                                   "p.race.fair")]
+testdat.w <- testdat.b
+testdat3.b <- cjs.df[1:length(p3), c("black", "class", 
+                                     "p.race.fair")]
+testdat3.w <- testdat3.b
+
+for(i in 1:length(p)){
+  testdat.b$p.race.fair[i] <- NA
+  testdat.w$p.race.fair[i] <- NA
+  testdat.b$black[i] <- 1
+  testdat.w$black[i] <- 0
+  testdat.b$class[i] <- p[i]
+  testdat.w$class[i] <- p[i]
+}
+
+predicted.b <- predict(csolve.c, testdat.b)
+predicted.w <- predict(csolve.c, testdat.w)
+
+for(i in 1:length(p3)){
+  testdat3.b$p.race.fair[i] <- NA
+  testdat3.w$p.race.fair[i] <- NA
+  testdat3.b$black[i] <- 1
+  testdat3.w$black[i] <- 0
+  testdat3.b$class3[i] <- p3[i]
+  testdat3.w$class3[i] <- p3[i]
+}
+
+predicted3.b <- predict(csolve.c3, testdat3.b)
+predicted3.w <- predict(csolve.c3, testdat3.w)
+
+par(mfcol = c(1,2))
+plot(p, seq(0, 1, length.out = length(p)), type = "n",
+     main = "Treat racial and ethnic groups equally",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p, predicted.b, col = "navy", lwd = 2)
+lines(p, predicted.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1); axis(2, las = 1)
+
+plot(p3, seq(0, 1, length.out = length(p3)), type = "n",
+     main = "Treat racial and ethnic groups equally",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p3, predicted3.b, col = "navy", lwd = 2)
+lines(p3, predicted3.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1, at = p3, labels = p3); axis(2, las = 1)
+
+# interplot(csolve.c, var1 = "black", var2 = "class") +
+#   labs(title = "Treat racial and ethnic groups equally",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
+# interplot(csolve.c3, var1 = "black", var2 = "class3") +
+#   labs(title = "Treat racial and ethnic groups equally",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class, Tripartite",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
 ```
 
 ```{r, echo = F}
 csolve.c <- lm(p.exces.force ~ black*class, data = cjs.df, weights = wts_whole)
 csolve.c3 <- lm(p.exces.force ~ black*class3, data = cjs.df, weights = wts_whole)
-interplot(csolve.c, var1 = "black", var2 = "class") +
-  labs(title = "Not use Excessive Force",
-       subtitle =  "Class Differences by Race",
-       x = "Class",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
-interplot(csolve.c3, var1 = "black", var2 = "class3") +
-  labs(title = "Not use Excessive Force",
-       subtitle =  "Class Differences by Race",
-       x = "Class, Tripartite",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
+
+p <- seq(min(cjs.df$class, na.rm = T), 
+         max(cjs.df$class, na.rm = T), 
+         by = .1)
+p3 <- seq(min(cjs.df$class3, na.rm = T), 
+         max(cjs.df$class3, na.rm = T), 
+         by = 1)
+
+testdat.b <- cjs.df[1:length(p), c("black", "class", 
+                                   "p.exces.force")]
+testdat.w <- testdat.b
+testdat3.b <- cjs.df[1:length(p3), c("black", "class", 
+                                     "p.exces.force")]
+testdat3.w <- testdat3.b
+
+for(i in 1:length(p)){
+  testdat.b$p.exces.force[i] <- NA
+  testdat.w$p.exces.force[i] <- NA
+  testdat.b$black[i] <- 1
+  testdat.w$black[i] <- 0
+  testdat.b$class[i] <- p[i]
+  testdat.w$class[i] <- p[i]
+}
+
+predicted.b <- predict(csolve.c, testdat.b)
+predicted.w <- predict(csolve.c, testdat.w)
+
+for(i in 1:length(p3)){
+  testdat3.b$p.exces.force[i] <- NA
+  testdat3.w$p.exces.force[i] <- NA
+  testdat3.b$black[i] <- 1
+  testdat3.w$black[i] <- 0
+  testdat3.b$class3[i] <- p3[i]
+  testdat3.w$class3[i] <- p3[i]
+}
+
+predicted3.b <- predict(csolve.c3, testdat3.b)
+predicted3.w <- predict(csolve.c3, testdat3.w)
+
+par(mfcol = c(1,2))
+plot(p, seq(0, 1, length.out = length(p)), type = "n",
+     main = "Not use Excessive Force",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p, predicted.b, col = "navy", lwd = 2)
+lines(p, predicted.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1); axis(2, las = 1)
+
+plot(p3, seq(0, 1, length.out = length(p3)), type = "n",
+     main = "Not use Excessive Force",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p3, predicted3.b, col = "navy", lwd = 2)
+lines(p3, predicted3.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1, at = p3, labels = p3); axis(2, las = 1)
+
+
+# interplot(csolve.c, var1 = "black", var2 = "class") +
+#   labs(title = "Not use Excessive Force",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
+# interplot(csolve.c3, var1 = "black", var2 = "class3") +
+#   labs(title = "Not use Excessive Force",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class, Tripartite",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
 ```
 
 ```{r, echo = F}
 csolve.c <- lm(p.account ~ black*class, data = cjs.df, weights = wts_whole)
 csolve.c3 <- lm(p.account ~ black*class3, data = cjs.df, weights = wts_whole)
-interplot(csolve.c, var1 = "black", var2 = "class") +
-  labs(title = "Holding Officers Accountable",
-       subtitle =  "Class Differences by Race",
-       x = "Class",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
-interplot(csolve.c3, var1 = "black", var2 = "class3") +
-  labs(title = "Holding Officers Accountable",
-       subtitle =  "Class Differences by Race",
-       x = "Class, Tripartite",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
+
+p <- seq(min(cjs.df$class, na.rm = T), 
+         max(cjs.df$class, na.rm = T), 
+         by = .1)
+p3 <- seq(min(cjs.df$class3, na.rm = T), 
+         max(cjs.df$class3, na.rm = T), 
+         by = 1)
+
+testdat.b <- cjs.df[1:length(p), c("black", "class", 
+                                   "p.account")]
+testdat.w <- testdat.b
+testdat3.b <- cjs.df[1:length(p3), c("black", "class", 
+                                     "p.account")]
+testdat3.w <- testdat3.b
+
+for(i in 1:length(p)){
+  testdat.b$p.account[i] <- NA
+  testdat.w$p.account[i] <- NA
+  testdat.b$black[i] <- 1
+  testdat.w$black[i] <- 0
+  testdat.b$class[i] <- p[i]
+  testdat.w$class[i] <- p[i]
+}
+
+predicted.b <- predict(csolve.c, testdat.b)
+predicted.w <- predict(csolve.c, testdat.w)
+
+for(i in 1:length(p3)){
+  testdat3.b$p.account[i] <- NA
+  testdat3.w$p.account[i] <- NA
+  testdat3.b$black[i] <- 1
+  testdat3.w$black[i] <- 0
+  testdat3.b$class3[i] <- p3[i]
+  testdat3.w$class3[i] <- p3[i]
+}
+
+predicted3.b <- predict(csolve.c3, testdat3.b)
+predicted3.w <- predict(csolve.c3, testdat3.w)
+
+par(mfcol = c(1,2))
+plot(p, seq(0, 1, length.out = length(p)), type = "n",
+     main = "Holding Officers Accountable",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p, predicted.b, col = "navy", lwd = 2)
+lines(p, predicted.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1); axis(2, las = 1)
+
+plot(p3, seq(0, 1, length.out = length(p3)), type = "n",
+     main = "Holding Officers Accountable",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p3, predicted3.b, col = "navy", lwd = 2)
+lines(p3, predicted3.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1, at = p3, labels = p3); axis(2, las = 1)
+
+# interplot(csolve.c, var1 = "black", var2 = "class") +
+#   labs(title = "Holding Officers Accountable",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
+# interplot(csolve.c3, var1 = "black", var2 = "class3") +
+#   labs(title = "Holding Officers Accountable",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class, Tripartite",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
 ```
+
+We can also model the relationship with these items by scaling the outcomes together. This seems reasonable given that all but the *solving crime* item have the same positive relationship. All items scale well together, too. I scale the outcome 0-1, with higher values again denoting more negative evaluations. The results indicate that the racial gap in evaluations increases as class increases. Higher class blacks on both operationalizations hold more negative views than higher class blacks, a larger gap than between low class blacks and whites. The margin increases from 0.05 points, to 0.065 points.
 
 ```{r, echo = F}
 csolve.c <- lm(police.rate.sc ~ black*class, data = cjs.df, weights = wts_whole)
 csolve.c3 <- lm(police.rate.sc ~ black*class3, data = cjs.df, weights = wts_whole)
-interplot(csolve.c, var1 = "black", var2 = "class") +
-  labs(title = "Overall Police Ratings",
-       subtitle =  "Class Differences by Race",
-       x = "Class",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
-interplot(csolve.c3, var1 = "black", var2 = "class3") +
-  labs(title = "Overall Police Ratings",
-       subtitle =  "Class Differences by Race",
-       x = "Class, Tripartite",
-       y = "Marginal Effect of Black") +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(), 
-        axis.line = element_line(colour = "black"))
+
+p <- seq(min(cjs.df$class, na.rm = T), 
+         max(cjs.df$class, na.rm = T), 
+         by = .1)
+p3 <- seq(min(cjs.df$class3, na.rm = T), 
+         max(cjs.df$class3, na.rm = T), 
+         by = 1)
+
+testdat.b <- cjs.df[1:length(p), c("black", "class", 
+                                   "police.rate.sc")]
+testdat.w <- testdat.b
+testdat3.b <- cjs.df[1:length(p3), c("black", "class", 
+                                     "police.rate.sc")]
+testdat3.w <- testdat3.b
+
+for(i in 1:length(p)){
+  testdat.b$police.rate.sc[i] <- NA
+  testdat.w$police.rate.sc[i] <- NA
+  testdat.b$black[i] <- 1
+  testdat.w$black[i] <- 0
+  testdat.b$class[i] <- p[i]
+  testdat.w$class[i] <- p[i]
+}
+
+predicted.b <- predict(csolve.c, testdat.b)
+predicted.w <- predict(csolve.c, testdat.w)
+
+for(i in 1:length(p3)){
+  testdat3.b$police.rate.sc[i] <- NA
+  testdat3.w$police.rate.sc[i] <- NA
+  testdat3.b$black[i] <- 1
+  testdat3.w$black[i] <- 0
+  testdat3.b$class3[i] <- p3[i]
+  testdat3.w$class3[i] <- p3[i]
+}
+
+predicted3.b <- predict(csolve.c3, testdat3.b)
+predicted3.w <- predict(csolve.c3, testdat3.w)
+
+par(mfcol = c(1,2))
+plot(p, seq(0, 1, length.out = length(p)), type = "n",
+     main = "Overall Police Ratings",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p, predicted.b, col = "navy", lwd = 2)
+lines(p, predicted.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1); axis(2, las = 1)
+
+plot(p3, seq(0, 1, length.out = length(p3)), type = "n",
+     main = "Overall Police Ratings",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p3, predicted3.b, col = "navy", lwd = 2)
+lines(p3, predicted3.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1, at = p3, labels = p3); axis(2, las = 1)
+
+# interplot(csolve.c, var1 = "black", var2 = "class") +
+#   labs(title = "Overall Police Ratings",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
+# interplot(csolve.c3, var1 = "black", var2 = "class3") +
+#   labs(title = "Overall Police Ratings",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class, Tripartite",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
+```
+
+Finally, turning to evaluations of court fairness, class does nothing to chaping the racial gap. A slight negative relationship exists, with the racial gap shrinking among higher class individuals. This difference is not significant, however. Blacks regardless of their class status hold more negative views of the capacity for courts in their area to treat everyone fairly, a gap between 0.15 and 0.18 points on the 0-1 outcome.
+
+```{r, echo = F}
+csolve.c <- lm(court.fair ~ black*class, data = cjs.df, weights = wts_whole)
+csolve.c3 <- lm(court.fair ~ black*class3, data = cjs.df, weights = wts_whole)
+
+p <- seq(min(cjs.df$class, na.rm = T), 
+         max(cjs.df$class, na.rm = T), 
+         by = .1)
+p3 <- seq(min(cjs.df$class3, na.rm = T), 
+         max(cjs.df$class3, na.rm = T), 
+         by = 1)
+
+testdat.b <- cjs.df[1:length(p), c("black", "class", 
+                                   "court.fair")]
+testdat.w <- testdat.b
+testdat3.b <- cjs.df[1:length(p3), c("black", "class", 
+                                     "court.fair")]
+testdat3.w <- testdat3.b
+
+for(i in 1:length(p)){
+  testdat.b$court.fair[i] <- NA
+  testdat.w$court.fair[i] <- NA
+  testdat.b$black[i] <- 1
+  testdat.w$black[i] <- 0
+  testdat.b$class[i] <- p[i]
+  testdat.w$class[i] <- p[i]
+}
+
+predicted.b <- predict(csolve.c, testdat.b)
+predicted.w <- predict(csolve.c, testdat.w)
+
+for(i in 1:length(p3)){
+  testdat3.b$court.fair[i] <- NA
+  testdat3.w$court.fair[i] <- NA
+  testdat3.b$black[i] <- 1
+  testdat3.w$black[i] <- 0
+  testdat3.b$class3[i] <- p3[i]
+  testdat3.w$class3[i] <- p3[i]
+}
+
+predicted3.b <- predict(csolve.c3, testdat3.b)
+predicted3.w <- predict(csolve.c3, testdat3.w)
+
+par(mfcol = c(1,2))
+plot(p, seq(0, 1, length.out = length(p)), type = "n",
+     main = "Court Fairness, Control",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p, predicted.b, col = "navy", lwd = 2)
+lines(p, predicted.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1); axis(2, las = 1)
+
+plot(p3, seq(0, 1, length.out = length(p3)), type = "n",
+     main = "Court Fairness, Control",
+     xlab = "Class",
+     ylab = "Evaluations",
+     axes = F)
+lines(p3, predicted3.b, col = "navy", lwd = 2)
+lines(p3, predicted3.w, col = "darkorange1", lwd = 2, lty = 2)
+legend("topright", c("Blacks", "Whites"), col = c("navy", "darkorange1"), lty = c(1,2), bty = "n")
+axis(1, at = p3, labels = p3); axis(2, las = 1)
+
+# interplot(csolve.c, var1 = "black", var2 = "class") +
+#   labs(title = "Court Fairness, Control",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
+# interplot(csolve.c3, var1 = "black", var2 = "class3") +
+#   labs(title = "Court Fairness, Control",
+#        #subtitle =  "Class Differences by Race",
+#        x = "Class, Tripartite",
+#        y = "Marginal Effect of Black") +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(),
+#         panel.background = element_blank(), 
+#         axis.line = element_line(colour = "black"))
+```
+
+#Part II: Explaining CJS Evaluations with Linked Fate
+
+Across all items, linked fate matters. Moreover, it matters for whites and blacks and to roughly the same degree. The output from the regression models supporting this are below. All items are scaled 0-1, and I use the tripartite class measure. The results are the same with the additive measure. The difference in evaluations between blacks the least and most believing in linked fate ranges from 0.02 to 0.12 points.
+
+```{r, echo = F}
+courtfair.b <- lm(p.crim.solve ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(courtfair.b)
+courtfair.w <- lm(p.crim.solve ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(courtfair.w)
+```
+```{r, echo = F}
+courtfair.b <- lm(p.viol.crim ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(courtfair.b)
+courtfair.w <- lm(p.viol.crim ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(courtfair.w)
+```
+```{r, echo = F}
+courtfair.b <- lm(p.race.fair ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(courtfair.b)
+courtfair.w <- lm(p.race.fair ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(courtfair.w)
+```
+```{r, echo = F}
+courtfair.b <- lm(p.exces.force ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(courtfair.b)
+courtfair.w <- lm(p.exces.force ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(courtfair.w)
+```
+```{r, echo = F}
+courtfair.b <- lm(p.account ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(courtfair.b)
+courtfair.w <- lm(p.account ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(courtfair.w)
+```
+```{r, echo = F}
+courtfair.b <- lm(police.rate.sc ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(courtfair.b)
+courtfair.w <- lm(police.rate.sc ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(courtfair.w)
+```
+
+We can also look at the independent relationshisp between linked fate, class, and court fairness evaluations.
+
+```{r, echo = F}
+courtfair.b <- lm(court.fair ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(courtfair.b)
+courtfair.w <- lm(court.fair ~ lfate + class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(courtfair.w)
+```
+
+### Class's Moderating Role
+
+```{r, include = F}
+p.crim.solve.b.classmod <- lm(p.crim.solve ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(p.crim.solve.b.classmod)
+p.crim.solve.w.classmod <- lm(p.crim.solve ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(p.crim.solve.w.classmod)
+p.viol.crim.b.classmod <- lm(p.viol.crim ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(p.viol.crim.b.classmod)
+p.viol.crim.w.classmod <- lm(p.viol.crim ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(p.viol.crim.w.classmod)
+p.race.fair.b.classmod <- lm(p.race.fair ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(p.race.fair.b.classmod)
+p.race.fair.w.classmod <- lm(p.race.fair ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(p.race.fair.w.classmod)
+p.exces.force.b.classmod <- lm(p.exces.force ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(p.exces.force.b.classmod)
+p.exces.force.w.classmod <- lm(p.exces.force ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(p.exces.force.w.classmod)
+
+paccount.b.classmod <- lm(p.account ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(paccount.b.classmod)
+paccount.w.classmod <- lm(p.account ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(paccount.w.classmod)
+
+police_rate.b.classmod <- lm(police.rate.sc ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(police_rate.b.classmod)
+police_rate.w.classmod <- lm(police.rate.sc ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(police_rate.w.classmod)
+```
+```{r, results = "asis", echo = F}
+stargazer(p.viol.crim.b.classmod, p.viol.crim.w.classmod,
+          title = "Relationship between Linked Fate, Class, and Police Protecting From Violent Crime",
+          column.labels = c("Blacks", "Whites"), model.numbers = F,
+          covariate.labels = c("Linked Fate", "Class", "Linked Fate * Class"),
+          dep.var.labels = c("Protect From Violent Crime"),
+          digits = 3, omit.stat = c("f", "adj.rsq"), df = F, no.space = T)
+```
+```{r, results = "asis", echo = F}
+stargazer(p.viol.crim.b.classmod, p.viol.crim.w.classmod,
+          title = "Relationship between Linked Fate, Class, and Police Protecting From Violent Crime",
+          column.labels = c("Blacks", "Whites"), model.numbers = F,
+          covariate.labels = c("Linked Fate", "Class", "Linked Fate * Class"),
+          dep.var.labels = c("Protect From Violent Crime"),
+          digits = 3, omit.stat = c("f", "adj.rsq"), df = F, no.space = T)
+```
+```{r, results = "asis", echo = F}
+stargazer(p.race.fair.b.classmod, p.race.fair.w.classmod,
+          title = "Relationship between Linked Fate, Class, and Police Treating Racial Groups Fairly",
+          column.labels = c("Blacks", "Whites"), model.numbers = F,
+          covariate.labels = c("Linked Fate", "Class", "Linked Fate * Class"),
+          dep.var.labels = c("Police Treating Racial Groups Fairly"),
+          digits = 3, omit.stat = c("f", "adj.rsq"), df = F, no.space = T)
+```
+```{r, results = "asis", echo = F}
+stargazer(p.exces.force.b.classmod, p.exces.force.w.classmod,
+          title = "Relationship between Linked Fate, Class, and Police Using Excess Force",
+          column.labels = c("Blacks", "Whites"), model.numbers = F,
+          covariate.labels = c("Linked Fate", "Class", "Linked Fate * Class"),
+          dep.var.labels = c("Police Using Excessive Force"),
+          digits = 3, omit.stat = c("f", "adj.rsq"), df = F, no.space = T)
+```
+```{r, results = "asis", echo = F}
+stargazer(paccount.b.classmod, paccount.w.classmod,
+          title = "Relationship between Linked Fate, Class, and Police Accountability",
+          column.labels = c("Blacks", "Whites"), model.numbers = F,
+          covariate.labels = c("Linked Fate", "Class", "Linked Fate * Class"),
+          dep.var.labels = c("Police Accountability"),
+          digits = 3, omit.stat = c("f", "adj.rsq"), df = F, no.space = T)
+```
+```{r, results = "asis", echo = F}
+stargazer(police_rate.b.classmod, police_rate.w.classmod,
+          title = "Relationship between Linked Fate, Class, and Police Evaluations",
+          column.labels = c("Blacks", "Whites"), model.numbers = F,
+          covariate.labels = c("Linked Fate", "Class", "Linked Fate * Class"),
+          dep.var.labels = c("Police Evaluations"),
+          digits = 3, omit.stat = c("f", "adj.rsq"), df = F, no.space = T)
+```
+
+We can also look at the independent relationship between linked fate, class, and court fairness evaluations. Again, there appears to be no moderating role for class on linked fate's relationship with the outcome. Moreover, this holds between whites and blacks.
+
+```{r, include = F}
+courtfair.b.classmod <- lm(court.fair ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 1,
+                  weights = wts_black)
+summary(courtfair.b.classmod)
+courtfair.w.classmod <- lm(court.fair ~ lfate*class3, 
+                  data = cjs.df,
+                  subset = black == 0,
+                  weights = wts_white)
+summary(courtfair.w.classmod)
+```
+
+```{r results = "asis", echo = F}
+stargazer(courtfair.b.classmod, courtfair.w.classmod,
+          title = "Relationship between Linked Fate, Class, and Court Evaluations",
+          column.labels = c("Blacks", "Whites"), model.numbers = F,
+          covariate.labels = c("Linked Fate", "Class", "Linked Fate * Class"),
+          dep.var.labels = c("Court Evaluations"),
+          digits = 3, omit.stat = c("f", "adj.rsq"), df = F, no.space = T)
 ```
